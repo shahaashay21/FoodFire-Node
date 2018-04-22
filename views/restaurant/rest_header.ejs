@@ -1,0 +1,235 @@
+<div class="container-fluid" id="header-bottom-wrap" style="padding-bottom:20px">
+    <div class="row">
+
+        <section id="item-head" style="height: auto;">
+            <!-- EXCEPT MOBILE -->
+            <div class="col-lg-3 col-md-3 col-sm-2 hidden-xs leftt">
+                <center><img class='category-item-desc' src="<%= restaurant.imgsrc %>"></center>
+            </div>
+            <div class="col-lg-7 col-md-6 col-sm-7 hidden-xs upp" style="color:#fff">
+                <h1><%= ucwords(restaurant.vendor_name) %></h1>
+
+                <ul class='rate stars' data-toggle='tooltip' title='Ratings' data-placement='top'>
+                    <% for(var j=0; j<5; j++){
+                        if(restaurant.ratings > j){
+                            <!-- <li></li> -->
+                            %><i class="fa fa-star" style="color:#db2e2e"></i>
+                        <% }else{ %>
+                            <!-- <li class='empty'></li> -->
+                            <i class="fa fa-star" style="color:#a0a0a0"></i>
+                        <% }
+                    }%>
+                </ul>
+                <br>
+                <div class='sell-details mob' style='margin-bottom: 8px;'>
+                    <div style='display: inline-table'><i style="color:#db2e2e" class='tooli fa fa-map-marker fa-lg' data-toggle='tooltip' title='Area Location' data-placement='top'></i><span style='font-color: #a0a0a0; margin: 0 9px 0 5px; font-size:13px'><%= ucwords(restaurant.area) %>, <%= ucwords(restaurant.city) %></span></div>
+                    <div style='display: inline-table'><i style="color:#db2e2e" class='tooli fa fa-clock-o fa-lg' data-toggle='tooltip' data-placement='top' title='Average Cooking Time'></i><span style='font-color: #a0a0a0; margin: 0 9px 0 5px; font-size:13px'><%= ucwords(restaurant.del_time) %> Minutes</span></div>
+                </div>
+                <div class='sell-details mob' style='line-height: 25px'>
+                    <% if(restaurant.speciality != null || restaurant.speciality != ''){ %>
+                        <div style='display: inline-table'><i style="color:#db2e2e" class='fa fa-asterisk fa-lg' data-toggle='tooltip' title='Speciality' data-placement='top'></i><span style='font-color: #a0a0a0; margin: 0 9px 0 5px; font-size:13px'><%= ucwords(restaurant.speciality) %></span></div>
+                    <% } %>
+                        <div style='display: inline-table'>
+                        
+                            <% if(restaurant.veg == 1 || restaurant.jain == 1 || restaurant.swaminarayan == 1 || restaurant.non_veg == 1) { %>
+                                <i style="color:#db2e2e; margin-right: 5px;" class='fa fa-cutlery fa-lg' data-toggle='tooltip' title='Food Diet' data-placement='top'></i>
+                            <% } %>
+                            <% if(restaurant.veg == 1) { %>
+                                <img src="/images/assets/vegetarian-20x20.png" data-toggle='tooltip' title='Vegetarian' data-placement='top' class='img-responsive'>
+                            <% } %>
+                            <% if(restaurant.jain == 1) { %>
+                                <img src="/images/assets/jain-20x20.png" data-toggle='tooltip' title='Jain' data-placement='top' class='img-responsive'>
+                            <% } %>
+                            <% if(restaurant.swaminarayan == 1) { %>
+                                <img src="/images/assets/swaminarayan-20x20.png" data-toggle='tooltip' title='Swaminarayan' data-placement='top' class='img-responsive'>
+                            <% } %>
+                            <% if(restaurant.non_veg == 1) { %>
+                                <img src="/images/assets/non-vegetarian-20x20.png" data-toggle='tooltip' title='Non Vegetarian' data-placement='top' class='img-responsive'>
+                            <% } %>
+
+                        </div>
+                    
+                        <span style='margin-left: 9px; display: inline-table' title='Price Range' data-placement='top' data-toggle='tooltip'>
+                        
+                        <% for(var j=0; j<5; j++) {
+                            if(restaurant.price > j) { %>
+                                <i style="color:#db2e2e" class='fa fa-inr fa-lg'></i>
+                            <% }
+                        } %>
+                    </span>
+                </div>
+                <br>
+
+                <div style="float:left">
+                    <span onclick="updatevalue(<%= restaurant.vendorunkid %>,'1','1')" class='btn btn-default btn-sm' title='Like' data-placement='top' data-toggle='tooltip'>
+                        <i class='fa fa-thumbs-up fa-white'></i>
+                        <span id='vendor-like-<%= restaurant.vendorunkid %>'><%= restaurant.likes %></span>
+                    </span>
+                    <span onclick="updatevalue(<%= restaurant.vendorunkid %>,'3','1')" class='btn btn-default btn-sm' title='Favourite' data-placement='top' data-toggle='tooltip'>
+                        <i class='fa fa-star fa-white'></i> 
+                        <span id='vendor-favourite-<%= restaurant.vendorunkid %>'><%= restaurant.favorites %></span>
+                    </span>
+                    <span onclick="updatevalue(<%= restaurant.vendorunkid %>,'4','1')" class='btn btn-default btn-sm' title='Visit' data-placement='top' data-toggle='tooltip'>
+                        <i class='fa fa-map-marker fa-lg'></i>
+                        <span id='vendor-visit-<%= restaurant.vendorunkid %>'><%= restaurant.visits %></span>
+                    </span>
+                </div>
+                <div>
+                    <span style="font-weight:bold; margin:5px 10px 0px 20px; float:left">Your Rating</span>
+                    <div class="cusrate" style="width:160px; display:table">
+                        <i onclick="updatevalue(<%= restaurant.vendorunkid %>,'2','1')" class="fa fa-star fa-2x" style="cursor:pointer" data-toggle='tooltip' title='Bad' data-placement='top'></i>
+                        <i onclick="updatevalue(<%= restaurant.vendorunkid %>,'2','2')" class="fa fa-star fa-2x" style="cursor:pointer" data-toggle='tooltip' title='Poor' data-placement='top'></i>
+                        <i onclick="updatevalue(<%= restaurant.vendorunkid %>,'2','3')" class="fa fa-star fa-2x" style="cursor:pointer" data-toggle='tooltip' title='Average' data-placement='top'></i>
+                        <i onclick="updatevalue(<%= restaurant.vendorunkid %>,'2','4')" class="fa fa-star fa-2x" style="cursor:pointer" data-toggle='tooltip' title='Great' data-placement='top'></i>
+                        <i onclick="updatevalue(<%= restaurant.vendorunkid %>,'2','5')" class="fa fa-star fa-2x" style="cursor:pointer" data-toggle='tooltip' title='Awesome' data-placement='top'></i>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- MOBILE VERSION -->
+            <div class="visible-xs col-xs-12">
+                <div class="visible-xs col-xs-4 leftt">
+                    <center><img class='category-item-desc' style="height:90px; width:90px; margin-top:10px" src="<%= restaurant.imgsrc %>"></center>
+                </div>
+                <div class="visible-xs col-xs-8" style="color:#fff;">
+                    <center>
+                        <h1 style="float:none; font-size:25px"><%= ucwords(restaurant.vendor_name) %></h1>
+                    </center>
+                    <center>
+                        <ul class='rate stars' style="margin:0px" data-toggle='tooltip' title='Ratings' data-placement='top'>
+                            <% for(var j=0; j<5; j++){
+                                if(restaurant.ratings > j){
+                                    <!-- <li></li> -->
+                                    %><i class="fa fa-star" style="color:#db2e2e"></i>
+                                <% }else{ %>
+                                    <!-- <li class='empty'></li> -->
+                                    <i class="fa fa-star" style="color:#a0a0a0"></i>
+                                <% }
+                            }%>
+                        </ul>
+                    </center>
+                    <br>
+                </div>
+            </div>
+            <div class="visible-xs col-xs-12" style="color:#fff; margin-top:10px">
+                <center>
+                    <div class='sell-details mob' style='margin-bottom: 8px;'>
+                        <div style='display: inline-table'><i style="color:#db2e2e" class='tooli fa fa-map-marker fa-lg' data-toggle='tooltip' title='Area Location' data-placement='top'></i><span style='font-color: #a0a0a0; margin: 0 9px 0 5px; font-size:13px'><%= ucwords(restaurant.area) %>, <%= ucwords(restaurant.city) %></span></div>
+                        <div style='display: inline-table'><i style="color:#db2e2e" class='tooli fa fa-clock-o fa-lg' data-toggle='tooltip' data-placement='top' title='Average Cooking Time'></i><span style='font-color: #a0a0a0; margin: 0 9px 0 5px; font-size:13px'><%= ucwords(restaurant.del_time) %> Minutes</span></div>
+                    </div>
+                </center>
+                <center>
+                    <div class='sell-details mob' style='line-height: 25px'>
+                        <% if(restaurant.speciality != null || restaurant.speciality != ''){ %>
+                            <div style='display: inline-table'><i style="color:#db2e2e" class='fa fa-asterisk fa-lg' data-toggle='tooltip' title='Speciality' data-placement='top'></i><span style='font-color: #a0a0a0; margin: 0 9px 0 5px; font-size:13px'><%= ucwords(restaurant.speciality) %></span></div>
+                        <% } %>
+                            <div style='display: inline-table'>
+                            
+                                <% if(restaurant.veg == 1 || restaurant.jain == 1 || restaurant.swaminarayan == 1 || restaurant.non_veg == 1) { %>
+                                    <i style="color:#db2e2e; margin-right: 5px;" class='fa fa-cutlery fa-lg' data-toggle='tooltip' title='Food Diet' data-placement='top'></i>
+                                <% } %>
+                                <% if(restaurant.veg == 1) { %>
+                                    <img src="/images/assets/vegetarian-20x20.png" data-toggle='tooltip' title='Vegetarian' data-placement='top' class='img-responsive'>
+                                <% } %>
+                                <% if(restaurant.jain == 1) { %>
+                                    <img src="/images/assets/jain-20x20.png" data-toggle='tooltip' title='Jain' data-placement='top' class='img-responsive'>
+                                <% } %>
+                                <% if(restaurant.swaminarayan == 1) { %>
+                                    <img src="/images/assets/swaminarayan-20x20.png" data-toggle='tooltip' title='Swaminarayan' data-placement='top' class='img-responsive'>
+                                <% } %>
+                                <% if(restaurant.non_veg == 1) { %>
+                                    <img src="/images/assets/non-vegetarian-20x20.png" data-toggle='tooltip' title='Non Vegetarian' data-placement='top' class='img-responsive'>
+                                <% } %>
+
+                            </div>
+                        
+                            <span style='margin-left: 9px; display: inline-table' title='Price Range' data-placement='top' data-toggle='tooltip'>
+                            
+                                <% for(var j=0; j<5; j++){
+                                    if(restaurant.ratings > j){ %>
+                                    <i style="color:#db2e2e" class='fa fa-inr fa-lg'></i>
+                                    <% }
+                                }%>
+                        </span>
+                    </div>
+                </center>
+                <br>
+                <div style="float:left; margin-top:15px">
+                    <span onclick="updatevalue(<%= restaurant.vendorunkid %>,'1','1')" class='btn btn-default btn-sm' title='Like' data-placement='top' data-toggle='tooltip'>
+                        <i class='fa fa-thumbs-up fa-white'></i>
+                        <span id='mobvendor-like-<%= restaurant.vendorunkid %>'><%= restaurant.likes %></span>
+                    </span>
+                    <span onclick="updatevalue(<%= restaurant.vendorunkid %>,'3','1')" class='btn btn-default btn-sm' title='Favourite' data-placement='top' data-toggle='tooltip'>
+                        <i class='fa fa-star fa-white'></i> 
+                        <span id='mobvendor-favourite-<%= restaurant.vendorunkid %>'><%= restaurant.favorites %></span>
+                    </span>
+                    <span onclick="updatevalue(<%= restaurant.vendorunkid %>,'4','1')" class='btn btn-default btn-sm' title='Visit' data-placement='top' data-toggle='tooltip'>
+                        <i class='fa fa-map-marker fa-lg'></i>
+                        <span id='mobvendor-visit-<%= restaurant.vendorunkid %>'><%= restaurant.visits %></span>
+                    </span>
+                </div>
+                <div style="float:right">
+                    <span style="font-weight:bold; margin:0px 10px 0px 20px;">Your Rating</span>
+                    <div class="cusratemob" style="width:160px; display:table">
+                        <i onclick="updatevalue(<%= restaurant.vendorunkid %>,'2','1')" class="fa fa-star fa-2x" style="cursor:pointer" data-toggle='tooltip' title='Bad' data-placement='top'></i>
+                        <i onclick="updatevalue(<%= restaurant.vendorunkid %>,'2','2')" class="fa fa-star fa-2x" style="cursor:pointer" data-toggle='tooltip' title='Poor' data-placement='top'></i>
+                        <i onclick="updatevalue(<%= restaurant.vendorunkid %>,'2','3')" class="fa fa-star fa-2x" style="cursor:pointer" data-toggle='tooltip' title='Average' data-placement='top'></i>
+                        <i onclick="updatevalue(<%= restaurant.vendorunkid %>,'2','4')" class="fa fa-star fa-2x" style="cursor:pointer" data-toggle='tooltip' title='Great' data-placement='top'></i>
+                        <i onclick="updatevalue(<%= restaurant.vendorunkid %>,'2','5')" class="fa fa-star fa-2x" style="cursor:pointer" data-toggle='tooltip' title='Awesome' data-placement='top'></i>
+                    </div>
+                </div>
+            </div>
+            <!-- MOBILE VERSION OVER -->
+
+            <div class="col-lg-2 col-md-3 col-sm-3 hidden-xs rightt">
+                <% if( restaurant.ratings >= 4.5) {
+                    var rat = 'Awesome';
+                          backcolor = '#78c928';
+                          border = '#60a533';
+                    
+                }else if(restaurant.ratings < 4.5 && restaurant.ratings >= 3.5){
+                    var rat = 'Good';
+                          backcolor = '#3498db';
+                          border = '#2980b9';
+                     
+                }else if(restaurant.ratings < 3.5 && restaurant.ratings >= 2.5){
+                    var rat = 'Average';
+                          backcolor = '#f1c40f';
+                          border = '#f39c12';
+                     
+                }else if(restaurant.ratings < 2.5 && restaurant.ratings >= 1.5){
+                    var rat = 'Poor';
+                          backcolor = '#e67e22';
+                          border = '#d35400';
+                     
+                }else if(restaurant.ratings < 1.5){
+                    var rat = 'Bad';
+                          backcolor = '#e74c3c';
+                          border = '#c0392b';
+                     
+                } %>
+                <div class="btn btn-default" style="padding:0 0 0 10px; min-height:38px; border:none; margin-top:40px; display: table">
+                    <% if( restaurant.votes == 0){ %>
+                        <span style="float:left; margin-right:5px; margin-top: 5px">
+                            <span style="font-weight:bold; font-size:15px;">No Ratings Yet</span>
+                        </span>
+                    <% } else { %>
+                        <span style="float:left; margin-right:5px">
+                            <span style="font-weight:bold; font-size:15px"><%= rat %></span>
+                            <span style="font-size:9px; display:block"><%= restaurant.votes %> User Votes</span>
+                        </span>
+                        <span class="btn btn-green" style="background:<%= backcolor %>;border-bottom:solid <%= border %>; font-size:19px; padding: 4px 7px"><%= restaurant.ratings %></span>
+                    <% } %>
+                </div>
+
+                <div class="btn btn-default btn-review" data-toggle="modal" data-target="#reviewmodal" style="margin-top:20px">
+                    <i class="fa fa-plus"></i>
+                    <span><b>Write a Review</b></span>
+                </div>
+            </div>
+        </section>                
+
+    </div>
+</div>        

@@ -1,0 +1,183 @@
+.desk-header{
+	background-color:#dd4b39;
+}
+.desk-header .ff-brand{
+	background-color:#d73925;
+	width:230px;
+	padding:6px;
+	font-size:24px;
+	color:#000;
+	float:left;
+}
+.desk-header .ff-brand span{
+	color:#fff;
+	font-family: 'Varela Round', sans-serif;
+}
+.desk-header .ff-brand-bars{
+	margin-left:245px;
+}
+.desk-header .ff-brand-bars span{
+	float:left;
+	color:#fff;
+	margin-top:17px;
+	font-size:16px;
+	cursor:pointer;
+}
+.desk-header .header-notification-symbol{
+	float:right;
+	font-size:16px;
+	padding:13px 10px 0 0;
+}
+.desk-header .header-notification-symbol .label{
+	font-size: 9px;
+	line-height: 0.9;
+	padding: 2px 3px;
+	position: relative;
+	text-align: center;
+	margin-left: -8px;
+	top: -8px;
+}
+
+
+
+
+
+
+
+
+.sidebar .navigation{
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	list-style: outside none none;
+}
+.sidebar .navigation li{
+	color:#b8c7ce;
+	padding: 10px 25px 10px 15px;
+	font-size: 14px;
+	border-left: 3px solid #222d32;
+}
+.sidebar .navigation li span{
+	margin-left: 3px;
+}
+
+.sidebar .navigation .sidebar-heading{
+	border-left: 3px solid #1a2226;
+	color:#4b646f;
+	background-color:#1a2226
+}
+
+.sidebar .navigation .sidebar-heading:hover{
+	border-left: 3px solid #1a2226;
+	background-color: #1a2226;
+	cursor: inherit;
+	color:#4b646f;
+}
+
+.sidebar .navigation li:hover{
+	background-color: #1e282c;
+	border-left: 3px solid;
+	border-left-color: #dd4b39;
+	cursor: pointer;
+	color: white;
+}
+
+.sidebar .navigation a{
+	color: inherit;
+	text-decoration: none;
+}
+
+.sidebar-active{
+	background-color: #1e282c !important;
+	border-left: 3px solid !important;
+	border-left-color: #dd4b39 !important;
+	color: white !important;
+}
+
+
+
+
+
+
+
+/*SLIDER CHECKBOX*/
+/* SLIDE THREE */
+.slideOne, .slideTwo, .slideThree, .slideFour, .slideFive {
+	width: 80px;
+	height: 26px;
+	/*background: #333;*/
+	background: #eee;
+	margin-top: 15px;
+
+	-webkit-border-radius: 50px;
+	-moz-border-radius: 50px;
+	border-radius: 50px;
+	position: relative;
+
+	-webkit-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.5), 0px 1px 0px rgba(255,255,255,0.2);
+	-moz-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.5), 0px 1px 0px rgba(255,255,255,0.2);
+	box-shadow: inset 0px 1px 1px rgba(0,0,0,0.5), 0px 1px 0px rgba(255,255,255,0.2);
+}
+
+.slideOne:after, .slideTwo:after, .slideThree:after, .slideFour:after, .slideFive:after {
+	content: 'OFF';
+	font: 12px/26px Arial, sans-serif;
+	color: #000;
+	position: absolute;
+	right: 10px;
+	z-index: 0;
+	font-weight: bold;
+	text-shadow: 1px 1px 0px rgba(255,255,255,.15);
+}
+
+.slideOne:before, .slideTwo:before, .slideThree:before, .slideFour:before, .slideFive:before {
+	content: 'ON';
+	font: 12px/26px Arial, sans-serif;
+	color: #00bf00;
+	position: absolute;
+	left: 10px;
+	z-index: 0;
+	font-weight: bold;
+}
+
+.slideOne label, .slideTwo label, .slideThree label, .slideFour label, .slideFive label {
+	display: block;
+	width: 34px;
+	height: 20px;
+
+	-webkit-border-radius: 50px;
+	-moz-border-radius: 50px;
+	border-radius: 50px;
+
+	-webkit-transition: all .4s ease;
+	-moz-transition: all .4s ease;
+	-o-transition: all .4s ease;
+	-ms-transition: all .4s ease;
+	transition: all .4s ease;
+	cursor: pointer;
+	position: absolute;
+	top: 3px;
+	left: 3px;
+	z-index: 1;
+
+	-webkit-box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.3);
+	-moz-box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.3);
+	box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.3);
+	background: #fcfff4;
+
+	/*background: -webkit-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+	background: -moz-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+	background: -o-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+	background: -ms-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+	background: linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);*/
+	background: -webkit-linear-gradient(top, #db2e2e 0%, #db2e2e 40%, #db2e2e 100%);
+	background: -moz-linear-gradient(top, #db2e2e 0%, #db2e2e 40%, #db2e2e 100%);
+	background: -o-linear-gradient(top, #db2e2e 0%, #db2e2e 40%, #db2e2e 100%);
+	background: -ms-linear-gradient(top, #db2e2e 0%, #db2e2e 40%, #db2e2e 100%);
+	background: linear-gradient(top, #db2e2e 0%, #db2e2e 40%, #db2e2e 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfff4', endColorstr='#b3bead',GradientType=0 );
+}
+
+.slideOne input[type=checkbox]:checked + label, .slideTwo input[type=checkbox]:checked + label, .slideThree input[type=checkbox]:checked + label, .slideFour input[type=checkbox]:checked + label, .slideFive input[type=checkbox]:checked + label {
+	left: 43px;
+}

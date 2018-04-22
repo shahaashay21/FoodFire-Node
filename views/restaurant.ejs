@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="google-site-verification" content="2hXNy22zvn7HZk28Yohk3rOVHxL_kCXDG_--nkV7_lQ" />
+  <title><%= ucwords(restaurant.vendor_name) %>, <%= ucwords(restaurant.area) %>, <%= ucwords(restaurant.city) %>, <%= ucwords(restaurant.vendor_name) %> Order Online - FoodFire</title>
+  <meta charset="utf-8">
+  <meta name="description" content="<%= ucwords(restaurant.vendor_name) %>, <%= ucwords(restaurant.city) %>; <%= ucwords(restaurant.vendor_name) %>, <%= ucwords(restaurant.area) %>; <%= ucwords(restaurant.vendor_name) %> Food Delivery, <%= ucwords(restaurant.vendor_name) %> Home Delivery, FoodFire" />
+  <meta name="keywords" content="<%= ucwords(restaurant.vendor_name) %> Food Delivery, <%= ucwords(restaurant.vendor_name) %> <%= ucwords(restaurant.city) %>, <%= ucwords(restaurant.vendor_name) %> Order Online, <%= ucwords(restaurant.vendor_name) %> Home Delivery, FoodFire" />
+  <meta name="author" content="Aashay Shah" />
+  <meta name="revisit-after" content="3 days" />
+  <meta name="googlebot" content="index, follow" />
+  <meta name="robots" content="index, follow" />
+  <meta name="csrf-token" content="<%= csrfToken %>">
+
+  <link rel="icon" href="/images/assets/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1">
+
+
+<% include head %>
+
+</head>
+    <body ng-app="foodfire" ng-controller="restaurant" data-ng-init="initialize('<%= restaurant.vendor_url %>')" >
+        <% include menu %>
+
+        <!-- SPACE FOR MOBILE DEVICE -->
+        <div class="col-xs-12 visible-xs" style="height:45px"></div>
+        
+
+        <% include restaurant/rest_header %>
+
+        
+
+
+
+
+        <!-- WRITE A REVIEW MODAL -->
+        <div class="modal fade" id="reviewmodal">
+            <div class="modal-dialog">
+                <div class="modal-content" style="font-size:18px">
+                    <form class="review-form">
+                        <div class="modal-header">
+                            <button type="button" class="ff-btn-modal-close pull-right" data-dismiss="modal">
+                                <i class="fa fa-times fa-white fa-lg"></i>
+                            </button>
+                            <h4 class="modal-title"><i class="fa fa-comments"></i> Write a review</h4>
+                        </div>
+                        <div class="modal-body">
+
+                            <div>
+                                <input type="checkbox" checked="" style="height:14px; margin-left:10px" name="vendor_like" value="1">
+                                <i class="fa fa-thumbs-up"></i>
+                                Like    
+                                <input type="checkbox" checked="" style="height:14px; margin-left:10px" name="vendor_favourite" value="1">
+                                <i class="fa fa-star"></i>
+                                Favourite    
+                                <input type="checkbox" checked="" style="height:14px; margin-left:10px" name="vendor_visit" value="1">
+                                <i class="fa fa-map-marker fa-large"></i>
+                                Visited
+                            </div>
+
+                            <div class="row" style="margin-top:10px">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div>
+                                        <textarea class="input_text_box form-control" name="user_review" id="user_review" placeholder="* Your Review" style="width:100%" rows="5" cols="30" name="text"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin-top:10px">
+                                <div class="col-md-3 col-xs-12" id="rate">
+                                    * Ratings
+                                </div>
+                                <div class="col-md-9 col-xs-12">
+                                    <div class="cusratemodal" style="width:160px; display:table">
+                                        <i onclick="orderrate = 1; reviewratecolourin(orderrate-1);" class="fa fa-star" style="cursor:pointer" data-toggle='tooltip' title='Bad' data-placement='top'></i>
+                                        <i onclick="orderrate = 2; reviewratecolourin(orderrate-1);" class="fa fa-star" style="cursor:pointer" data-toggle='tooltip' title='Poor' data-placement='top'></i>
+                                        <i onclick="orderrate = 3; reviewratecolourin(orderrate-1);" class="fa fa-star" style="cursor:pointer" data-toggle='tooltip' title='Average' data-placement='top'></i>
+                                        <i onclick="orderrate = 4; reviewratecolourin(orderrate-1);" class="fa fa-star" style="cursor:pointer" data-toggle='tooltip' title='Great' data-placement='top'></i>
+                                        <i onclick="orderrate = 5; reviewratecolourin(orderrate-1);" class="fa fa-star" style="cursor:pointer" data-toggle='tooltip' title='Awesome' data-placement='top'></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <input type="submit" class="btn btn-primary btn-lg" value="Submit">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- ITEM PAGE OWN MENU -->
+        <div class="container-fluid image-menu" style="font-weight:bold; background: #f6f6f6; height:62px;">
+            <div class="row">
+                <div class="col-lg-2 visible-lg">
+                    
+                </div>
+                <div class="col-lg-7 col-sm-12 col-md-12 hidden-xs" style="padding-top:0">
+                    
+                        <ul class="menu2" style="margin-top:25px">
+                            <li class="menu2-menu"><i class="fa fa-list"></i> Menu</li>
+                            <li class="menu2-info"><i class="fa fa-clock-o"></i> Information</li>
+                            <li class="menu2-reviews"><i class="fa fa-star"></i> Reviews</li>
+                        </ul>
+                    
+                </div>
+                <!-- MOBILE DEVICE -->
+                <div class="visible-xs col-xs-12" style="padding: 0px">
+                    <ul class="menu2" style="width:auto; margin: 25px auto; display:table">
+                        <li class="menu2-menu" style="padding-left: 0px"><i class="fa fa-list"></i> Menu</li>
+                        <li class="menu2-info"><i class="fa fa-clock-o"></i> Info</li>
+                        <li class="menu2-reviews" style="padding-right:0px"><i class="fa fa-star"></i> Reviews</li>
+                    </ul>
+                </div>
+                <!-- END -->
+                <div class="col-lg-3 visible-lg">
+                    
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="container-fluid" style="margin-top:20px">
+            <div class="row">
+                <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12 products-details">
+
+                        <% include restaurant/products %>
+                        
+                </div>
+
+                <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12 menu-info" style="display:none">
+
+                        Menu Information
+                        
+                </div>
+
+                <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12 menu-review" style="display:none; padding:0 10px">
+
+                    <div class="panel panel-foodfire">
+                        <div class="panel-heading">
+                            <div class="panel-title" style="height:35px; line-height:33px; font-size:16px;">
+                                <span class="pull-left">
+                                    <i class="fa fa-comments-o"></i>
+                                    User Reviews   
+                                </span>
+                                <div class="btn-edit btn-default-edit pull-right" style="background:#f1f1f1; padding:0 0 0 10px; min-height:38px; border:none; display: table">
+                                    <span style="float:left; margin:5px 10px 5px 0px">
+                                        <span style="font-weight:bold; font-size:13px;">No Ratings Yet</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-body" style="padding:5px 10px">
+                            <div class="review-list">
+                                <div class="row">
+                                    <div class="pull-left">
+                                        <b style="font-size:16px; margin-right:5px">Aashay Shah</b>
+                                        05/07/2015
+                                    </div>
+                                    <div class="btn-edit btn-default-edit pull-right" style="background:#f1f1f1; padding:0 0 0 10px; min-height:38px; border:none; display: table">
+                                
+    
+                                        <span data-ng-if="restaurant.votes == 0" style="float:left; margin-right:5px; margin-top: 5px">
+                                            <span style="font-weight:bold; font-size:15px;">No Ratings Yet</span>
+                                        </span>
+
+                                        <span data-ng-if="restaurant.votes != 0" style="float:left; margin:5px 8px 0 0">
+                                            <span style="font-weight:bold; font-size:15px">{{ $rat }}</span>
+                                        </span>
+                                        <span class="btn btn-green" style="background:{{ $backcolor }} ;border-bottom:solid {{ $border }}; font-size:19px; padding: 4px 7px">{{ restaurant.ratings }}</span>
+                                    
+                                </div>
+                                </div>
+                                <div class="margin-top-10 row">
+                                    <div class="text">I have placed online order to dynamite.. Really awesome food taste & very much happy with the quality of food. I have never taste this kind of food anywhere in Baroda. Now baroda is getting mumbai's taste.. Cheers to dynamite.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        
+                </div>
+
+                <div id="product-cart" class="col-lg-3 col-md-4 col-sm-4 hidden-xs" style="margin-top: -20px;">
+                    <div id="wrap-sticky" style="padding-top:5px">
+                        
+                    </div>
+                </div>
+        
+        
+            </div>
+        </div>
+        
+        <!-- PRODUCT DETAIL AS MODAL WINDOW USING AJAX CALL -->
+        <div id="prodetail"></div>
+        <% include restaurant/productDetails.ejs %>
+        
+        <%
+        function ucwords(str){
+            return (str + '').replace(/^(.)|\s+(.)/g, function ($1) {
+                return $1.toUpperCase()
+            })
+        }
+        %>     
+        
+        <% include footer %>
+        <% include foot %>
+    </body>
+</html>

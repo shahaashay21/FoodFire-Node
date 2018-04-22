@@ -1,0 +1,54 @@
+<div class="row">
+    <div id="category-menu" class="visible-lg col-lg-3" style="margin-top: -15px">
+        <div id="category-sticky" style="padding-top:5px">
+            <div class="items-category-white-box">
+                <h1>
+                    <i class="fa fa-fighter-jet" style="color:#db2e2e"></i>
+                    <b> CATEGORIES</b>
+                </h1>
+                <hr><hr>
+
+                <div class="cat-menu" data-ng-repeat="(categoryname, product) in productsInfo">
+                    <a style="text-decoration:none" href="#{{ categoryname }}">
+                        <h3 class="cat-items" style="border-top: none">{{ categoryname }} ({{ product.length }})</h3>
+                    <a/>
+                </div>
+            </div>                            
+        </div>
+    </div>
+
+    <div class="col-lg-9 items-menu-white-box">
+        <div data-ng-repeat="(categoryname, products) in productsInfo">
+            <div class="menu-head" style="margin-top:0px" data-toggle="collapse" data-target="#{{ products[0].categoryunkid }}">
+                <a id="{{ categoryname }}"></a>
+                {{ categoryname }} ({{ products.length }})
+                <i class="fa fa-minus-circle" style="float:right"></i>
+            </div>
+
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div id="{{ products[0].categoryunkid }}" class="collapse in" data-ng-repeat="product in products">
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            <div class="row product-detail">
+                                
+                                <div class="col-xs-8">
+                                    <div class="product-name" data-ng-click="productDetail(product.id)">{{ product.name }}</div>
+                                </div>
+                                <div class="col-xs-4" align="center">
+                                    <div style="float:right">
+                                        <span data-ng-if="product.originalprice" class="text-muted" style="text-decoration:line-through; font-size:12px; margin-right: 5px">
+                                            <i class="fa fa-inr" style="text-decoration:line-through"></i>
+                                            {{ product.originalprice }}
+                                        </span>
+                                        <i class="fa fa-inr"></i>{{ product.price }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

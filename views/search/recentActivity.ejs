@@ -1,0 +1,24 @@
+<div class="col-lg-2 col-md-2 hidden-xs hidden-sm" id="checkforxs" style="margin-top: 30px; background-color: #fff">
+    
+    <h1 style="font-size: 16px">
+        <i class="fa fa-diamond" style="color:#db2e2e"></i><b> RECENT</b> ACTIVITY
+    </h1>
+    <hr style="margin-left: 0px; margin-top: 5px; width: 30%; "><hr style="margin: 19px 0px 0px">
+
+    <div class="continer-fluid recent-activity-content" style="clear:both">
+        <div data-ng-repeat="recentActivity in recentActivityData" class="container-fluid" style="border-bottom: 2px solid #d2d2d2; padding-bottom: 10px; padding-top: 10px">
+            <div class="row">
+                <div class="col-lg-4" style="padding:0;">
+                    <div class="img-circle outer-round">
+                        <img class="img-circle inner-round" ng-src="{{ recentActivity.imgsrc }}">
+                    </div>
+                </div>
+                <div class="col-lg-8" style="padding:0">
+                    {{ recentActivity.cusname | capitalize }} just viewed 
+                    <a href="/vendor/{{ recentActivity.city | lowercase }}/{{ recentActivity.vendor_url | lowercase }}" style="color: #db2e2e; cursor:pointer">{{ recentActivity.vendor_name | capitalize }}</a>
+                    <br> <span style="font-size:10px">{{ recentActivity.createdAt }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

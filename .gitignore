@@ -57,3 +57,6 @@ typings/
 # dotenv environment variables file
 .env
 
+# Amazon aws pem file
+amshah.pem
+

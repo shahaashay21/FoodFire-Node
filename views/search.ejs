@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="google-site-verification" content="2hXNy22zvn7HZk28Yohk3rOVHxL_kCXDG_--nkV7_lQ" />
+  <title>FoodFire Search - Food Delivery Anand | Order Food Online | Home Delivery Food | Online Food Delivery</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Search FoodFire - Food Delivery in Anand, Food Order, Online Food Ordering Anand, Free Home Delivery, Office Delivery. FoodFire is one of the first online food ordering and delivery platforms in Anand to bring food from your favourite restaurant to your doorstep." />
+  <meta name="keywords" content="FoodFire, Search Online Food Order Anand, Search Online Order, Search Online Restaurants Anand" />
+  <meta name="author" content="Aashay Shah" />
+  <meta name="revisit-after" content="3 days" />
+  <meta name="googlebot" content="index, follow" />
+  <meta name="robots" content="index, follow" />
+  <meta name="csrf-token" content="<%= csrfToken %>">
+
+  <link rel="icon" href="/images/assets/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1">
+
+
+<% include head %>
+
+</head>
+<body ng-app="foodfire" ng-controller="search" data-ng-init="initialize()" >
+
+<% include menu %>
+
+
+<!-- SPACE FOR MOBILE DEVICE -->
+<div class="col-xs-12 visible-xs" style="height:45px"></div>
+
+<!-- TOP TOGGLE INSTANT SEARCH BOX -->
+<div class="container-fluid search-slide" style="display:none; position:absolute; z-index:99; left:0; right:0; background:white; padding-top:15px;">
+	<div class="row">
+		<form method="get" action="search" name="search">
+			<div class="col-lg-3 col-md-2 col-sm-1 hidden-xs"></div>
+
+			<div class="col-lg-3 col-md-4 col-sm-5 hidden-xs">
+				<input id="search1" data-ng-model = "searchValue" data-ng-change ="searchBox()" class="search_input_text1" type="text" placeholder="Search by Restaurant or Food." name="q">
+			</div>
+
+			<div class="col-lg-2 col-md-2 col-sm-1 hidden-xs"></div>
+
+			<!-- FOR MOBILE -->
+			<div class="visible-xs col-xs-5" style="padding-left:10px; padding-right:0px; margin-top:40px">
+				<input id="search2" data-ng-model = "searchValue" data-ng-change="searchBox()" class="search_input_text1-mob" type="text" placeholder="Search by Restaurant" name="q">
+			</div>
+		
+		</form>	
+	</div>	
+</div>
+
+
+ <!-- HEADER -- SEARCH AND SEARCH VALUE -->
+<div class="container-fluid ff-head">
+	<div class="col-lg-2"></div>
+	<div class="col-lg-8">
+		<i class="fa fa-search"></i> Search - {{ searchValue }}
+	</div>
+	<div class="col-lg-2"></div>
+</div>
+
+
+<!-- FILTER BOX --- SORTINGS BOX --- SEARCH RESULT --- RECENT ACTIVITY -->
+<div class="container-fluid">
+	<div class="rw">
+
+		<!-- RECENT ACTIVITY -->
+		<% include search/recentActivity %>
+		
+
+		<!-- SORTINGS BOX -->
+		<% include search/restaurantSearch %>
+
+		<!-- FILTER BOX -->
+		<div class="col-lg-3 col-md-3 col-sm-4 hidden-xs" style="margin-top: 30px; background-color: #fff">
+			<div id="wrap-sticky" style="padding-top:5px">
+				
+			</div>
+		</div>
+
+	</div>
+</div>
+
+
+
+<% include footer %>
+
+<a class="scrollTop"></a>
+
+
+<% include foot %>
+	
+	
+	
+
+
+</body>
+</html>
