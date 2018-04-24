@@ -60,3 +60,6 @@ typings/
 # Amazon aws pem file
 amshah.pem
 
+# Visual studio settings
+.vscode
+

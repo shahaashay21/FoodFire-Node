@@ -41,9 +41,9 @@
                                 <div data-ng-if="itemInfo.product.food_diet.length != 1">
                                     <div class="col-xs-12" style="margin:10px 0">
                                         <div class="btn-group" data-toggle="buttons">
-                                            <label class="btn btn-default-edit" data-ng-repeat="diet in itemInfo.product.food_diet" data-ng-class="diet == 'Vegetarian' ? 'active' : ''">
-                                                <input data-ng-if="diet == Vegetarian" checked="checked" type="radio" name="food_diet" value="{{ diet | capitalize }}" >
-                                                <input data-ng-if="diet != Vegetarian" type="radio" name="food_diet" value="{{ diet | capitalize }}" >
+                                            <label class="btn btn-default-edit" data-ng-repeat="diet in itemInfo.product.food_diet" data-ng-class="diet.toLowerCase() == 'vegetarian' ? 'active' : ''">
+                                                <input data-ng-if="diet.toLowerCase() == 'vegetarian'" checked type="radio" name="food_diet" value="{{ diet | capitalize }}" >
+                                                <input data-ng-if="diet.toLowerCase() != 'vegetarian'" type="radio" name="food_diet" value="{{ diet | capitalize }}" >
                                                 {{ diet | capitalize }}
                                             </label>
                                         </div>
@@ -62,9 +62,9 @@
                                 <div data-ng-if="itemInfo.product.food_taste.length != 1">
                                     <div class="col-xs-12" style="margin:10px 0">
                                         <div class="btn-group" data-toggle="buttons">
-                                            <label class="btn btn-default-edit" data-ng-repeat="taste in itemInfo.product.food_taste" data-ng-class="taste == 'Medium' ? 'active' : ''">
-                                                <input data-ng-if="taste == Medium" checked="checked" type="radio" name="food_taste" value="{{ taste | capitalize }}" >
-                                                <input data-ng-if="taste != Medium" type="radio" name="food_taste" value="{{ taste | capitalize }}" >
+                                            <label class="btn btn-default-edit" data-ng-repeat="taste in itemInfo.product.food_taste" data-ng-class="taste.toLowerCase() == 'medium' ? 'active' : ''">
+                                                <input data-ng-if="taste.toLowerCase() == 'medium'" checked type="radio" name="food_taste" value="{{ taste | capitalize }}" >
+                                                <input data-ng-if="taste.toLowerCase() != 'medium'" type="radio" name="food_taste" value="{{ taste | capitalize }}" >
                                                 {{ taste | capitalize }}
                                             </label>
                                         </div>
