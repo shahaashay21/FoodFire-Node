@@ -2,6 +2,12 @@
 
 module.exports = function(sequelize, DataTypes) {
 	return sequelize.define('cart', {
+		cartid: {
+			type: DataTypes.INTEGER(11),
+			allowNull: false,
+			primaryKey: true,
+			autoIncrement: true
+		},
 		cusunkid: {
 			type: DataTypes.INTEGER(11),
 			allowNull: false,

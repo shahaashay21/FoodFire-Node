@@ -120,7 +120,7 @@ app.get('/vendor/:city/:vendor_url', restaurant.index);
 
 
 /*-----------
-		TRSTING
+		TESTING
 -----------*/
 app.get('/logcart', cart.logSession);
 
@@ -154,7 +154,10 @@ app.post('/restaurantsProducts', restaurant.restaurantsProducts);
 app.post('/getItem', restaurant.getItem);
 
 //Add item into cart
-app.post('/cart/add', cart.add);
+app.post('/cart/add', cart.addCart);
+
+//Get cart
+app.post('/cart/get', cart.getCart);
 
 
 // catch 404 and forward to error handler

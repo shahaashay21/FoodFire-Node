@@ -16,6 +16,7 @@ const logger = new (winston.Logger)({
             datePattern: 'yyyy-MM-dd',
             prepend: true,
             handleExceptions: true,
+            json: false,
             level: env === 'development' ? 'debug' : 'verbose'
         })
     ]
@@ -29,6 +30,7 @@ const apiTrackLogger = new (winston.Logger)({
             datePattern: 'yyyy-MM-dd',
             prepend: true,
             handleExceptions: true,
+            json: false,
             level: env === 'development' ? 'debug' : 'verbose'
         })
     ]

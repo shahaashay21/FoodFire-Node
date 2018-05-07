@@ -658,7 +658,7 @@ function displayCart(){
 
 	var dispalyCart = $.ajax({
 	 		type: 'POST',
-	 		url: '/vendor/product/cart',
+	 		url: '/cart/get',
 	 		data: '_csrf='+_csrf,
 	 		dataType: "json",
 	 		timeout: 4000,
@@ -666,7 +666,7 @@ function displayCart(){
 	 			$('#wrap-sticky').html('<ul class="spinner"><li></li><li></li><li></li><li></li><li></li></ul>');
 	 		},
 	 		success:function(response){
-	 			// console.log(response);
+	 			console.log(response);
 	 			// if(response['modal'] == 1){
 	 				// $('#prodetail').html(response['product']);
 	 				var url = $(location).attr('href');
@@ -677,7 +677,7 @@ function displayCart(){
 	 					}
 	 				}
 	 				$('#wrap-sticky .spinner').hide();
-	 				$('#wrap-sticky').html(response['cart']);
+	 				$('#wrap-sticky').html(response);
 	 				if(url.indexOf("www.foodfire.in/checkout")+1){
 	 					if(response['qty'] == 0){
 	 						window.location="http://www.foodfire.in";
