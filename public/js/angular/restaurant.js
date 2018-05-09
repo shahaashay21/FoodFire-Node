@@ -1,4 +1,4 @@
-app.controller("restaurant", function($scope, $http, $location){
+app.controller("restaurant", function($scope, $http, $location, $window, service){
     var url = $location.absUrl().split('?')[0];
     $scope.initialize = function(vendor_url){
 		$scope.getRestaurantProducts(vendor_url);
@@ -13,13 +13,12 @@ app.controller("restaurant", function($scope, $http, $location){
 			dataType: 'json'
 		}).then(function suc(data){
             data = data.data;
-            console.log(data);
+            // console.log(data);
 			$scope.productsInfo = data;
 		});
     }
 
     $scope.productDetail = function(product_id){
-
         $http({
 			method: 'POST',
 			url: '/getItem',
@@ -38,7 +37,7 @@ app.controller("restaurant", function($scope, $http, $location){
             
             $('#productModal').modal('show');
 		}, function error(response){
-            console.log(response);
+            // console.log(response);
             if(response.statusText == "timeout") {
                 $scope.productDetail(id);
             } 

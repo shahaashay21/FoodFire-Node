@@ -39,9 +39,9 @@ exports.addCart = function (req, res) {
             }).then(result => {
                 return showSession(req);
             }).then(() => {
-                res.send("success");
+                res.send(JSON.stringify("success"));
             }).catch(() => {
-                res.send("error");
+                res.send(JSON.stringify("error"));
             });
     });
 };
@@ -72,15 +72,15 @@ exports.getCart = function (req, res) {
                             merged.extraItems = extraItemsInfo[i];
                             returnCart.push(merged);
                         }
-                        res.send(returnCart);
+                        res.send(JSON.stringify(returnCart));
                     });
                 });
             } else {
-                res.send(cart);
+                res.send(JSON.stringify(cart));
             }
         }).catch(ex => {
             logger.error(ex);
-            res.send("error");
+            res.send(JSON.stringify("error"));
         });
 };
 

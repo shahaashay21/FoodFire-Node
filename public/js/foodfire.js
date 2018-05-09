@@ -618,41 +618,40 @@ function updatevalue(vendorid,codeid,val){
 }
 
 
-//GET PRODUCT DETAILS
-function productDetail(id){
-	var productdetail = $.ajax({
-	 		type: 'POST',
-	 		url: '/vendor/product/detail',
-	 		data: '_csrf='+_csrf+'&productid='+id,
-	 		dataType: "json",
-	 		timeout: 4000,
-	 		beforeSend:function(){
+//GET PRODUCT DETAILS (Not using) (Moved to angular)
+// function productDetail(id){
+// 	var productdetail = $.ajax({
+// 	 		type: 'POST',
+// 	 		url: '/vendor/product/detail',
+// 	 		data: '_csrf='+_csrf+'&productid='+id,
+// 	 		dataType: "json",
+// 	 		timeout: 4000,
+// 	 		beforeSend:function(){
 	 			
-	 		},
-	 		success:function(response){
-	 			// console.log(response['modal']);
-	 			if(response['modal'] == 1){
-	 				$('#prodetail').html(response['product']);
+// 	 		},
+// 	 		success:function(response){
+// 	 			// console.log(response['modal']);
+// 	 			if(response['modal'] == 1){
+// 	 				$('#prodetail').html(response['product']);
 
-	 				$('#productModal').modal('hide');
-	 				$('body').removeClass('modal-open');
-					$('.modal-backdrop').remove();
-					$('body').css('padding-right','0px');
+// 	 				$('#productModal').modal('hide');
+// 	 				$('body').removeClass('modal-open');
+// 					$('.modal-backdrop').remove();
+// 					$('body').css('padding-right','0px');
 
-	 				$('#productModal').modal('show');
-	 			}
-	 			productdetail.abort();
-	 		},
-	 		error: function(jqXHR, textStatus, errorThrown) {
-		        if(textStatus=="timeout") {
-		           productDetail(id);
-		        } 
-		    }
-	});
-}
+// 	 				$('#productModal').modal('show');
+// 	 			}
+// 	 			productdetail.abort();
+// 	 		},
+// 	 		error: function(jqXHR, textStatus, errorThrown) {
+// 		        if(textStatus=="timeout") {
+// 		           productDetail(id);
+// 		        } 
+// 		    }
+// 	});
+// }
 
 displayCart();
-
 //DISPLAY CART
 function displayCart(){
 
@@ -666,7 +665,7 @@ function displayCart(){
 	 			$('#wrap-sticky').html('<ul class="spinner"><li></li><li></li><li></li><li></li><li></li></ul>');
 	 		},
 	 		success:function(response){
-	 			console.log(response);
+	 			// console.log(response);
 	 			// if(response['modal'] == 1){
 	 				// $('#prodetail').html(response['product']);
 	 				var url = $(location).attr('href');
@@ -749,37 +748,38 @@ function displayCart(){
 }
 
 
-//ADD PRODUCTS INTO CART
-function addProduct(){
-	var product = $('.itemForm').serializeArray();
-	product.push({name: '_csrf', value: _csrf});
+//ADD PRODUCTS INTO CART (Not using) (Moved to angular)
+// function addProduct(){
+// 	var product = $('.itemForm').serializeArray();
+// 	product.push({name: '_csrf', value: _csrf});
 
-	// console.log(product);
-	var addproductreq = $.ajax({
-	 		type: 'POST',
-	 		url: '/cart/add',
-	 		data: product,
-	 		dataType: "json",
-	 		timeout: 4000,
-	 		success:function(response){
-	 			// console.log(response);
-	 			// if(response['modal'] == 1){
-	 				// $('#prodetail').html(response['product']);
-	 				$('#wrap-sticky').html(response['cart']);
-	 				$('#productModal').modal('hide');
-	 				$('.product-total').html(response['qty']);
-	 			// }
-	 			displayCart();
-	 			addproductreq.abort();
-	 		},
-	 		error: function(jqXHR, textStatus, errorThrown) {
-		        if(textStatus=="timeout") {
-		           addProduct();
-		        } 
-		    }
-	});	
-	return false;
-}
+// 	// console.log(product);
+// 	var addproductreq = $.ajax({
+// 	 		type: 'POST',
+// 	 		url: '/cart/add',
+// 	 		data: product,
+// 	 		dataType: "json",
+// 	 		timeout: 4000,
+// 	 		success:function(response){
+// 				console.log(product);
+// 				return;
+// 	 			// if(response['modal'] == 1){
+// 	 				// $('#prodetail').html(response['product']);
+// 	 				$('#wrap-sticky').html(response['cart']);
+// 	 				$('#productModal').modal('hide');
+// 	 				$('.product-total').html(response['qty']);
+// 	 			// }
+// 	 			displayCart();
+// 	 			addproductreq.abort();
+// 	 		},
+// 	 		error: function(jqXHR, textStatus, errorThrown) {
+// 		        if(textStatus=="timeout") {
+// 		           addProduct();
+// 		        } 
+// 		    }
+// 	});	
+// 	return false;
+// }
 
 //DELETE PRODUCTS FROM CART
 function delProduct(data){

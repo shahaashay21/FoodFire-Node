@@ -32,7 +32,6 @@
 
 
 
-
         <!-- WRITE A REVIEW MODAL -->
         <div class="modal fade" id="reviewmodal">
             <div class="modal-dialog">
@@ -182,7 +181,7 @@
                         
                 </div>
 
-                <div id="product-cart" class="col-lg-3 col-md-4 col-sm-4 hidden-xs" style="margin-top: -20px;">
+                <div ng-controller="cart" data-ng-init="initialize('<%= restaurant.vendor_url %>')" id="product-cart" class="col-lg-3 col-md-4 col-sm-4 hidden-xs" style="margin-top: -20px;">
                     <div id="wrap-sticky" style="padding-top:5px">
                         
                     </div>
