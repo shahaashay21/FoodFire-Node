@@ -178,12 +178,142 @@
                             </div>
                         </div>
                     </div>
-                        
                 </div>
 
                 <div ng-controller="cart" data-ng-init="initialize('<%= restaurant.vendor_url %>')" id="product-cart" class="col-lg-3 col-md-4 col-sm-4 hidden-xs" style="margin-top: -20px;">
-                    <div id="wrap-sticky" style="padding-top:5px">
-                        
+                    <div id="wrap-sticky" style="padding-top:5px"></div>
+                    <div data-ng-if="cart == '' || cart == null" class="items-category-white-box">
+                            <h1>
+                                <b>YOUR ORDER</b><i class="fa fa-briefcase fa-2x" style="color:#db2e2e; float:right; margin-right:30px"></i>
+                            </h1>
+                                <hr><hr><br>
+                            <div class="row" style="border-top: 1px solid #efeeea; margin:5px 10px 10px;">
+                                <div class="well">Your shopping cart is empty!</div>
+                            </div>
+                    </div>
+
+                    <div data-ng-if="cart != null" class="items-category-white-box">
+                            <h1>
+                                <b>YOUR ORDER</b><i class="fa fa-briefcase fa-2x" style="color:#db2e2e; float:right; margin-right:30px"></i><!-- <i class="fa fa-suitcase fa-2x" style="color:#db2e2e; float:right; margin-right:30px"></i> -->
+                            </h1>
+                            <hr><hr><br>
+                            <div class="approx-time">
+                                    <b>Approx. Delivery Time : </b>
+                                    <div style="display:inline-table">
+                                        {{del_time}}
+                                        <i class="fa fa-clock-o fa-lg"></i>
+                                    </div>
+                            </div>
+                            <div class="cart-vendor" style="font-size: 14px">
+                                <div class="cart-vendor-details" style="max-height:250px; overflow-y:auto">
+                                    <div class="cart-seller" data-ng-repeat="vendor in cart">
+                                        <!-- {{cart}} -->
+                                        <a style="text-decoration:none" href="{{vendor[0].vendor_fullurl}}">
+                                            <b>{{vendor[0].vendor_name | capitalize}}</b>
+                                        </a>
+                                        <div class="container-fluid" data-ng-repeat="item in vendor">
+                                            <div class="seller-product" style="font-size:13px">
+                                                <div class="col-xs-6 no-padding" style="padding-left:5px">
+                                                    <span class="product-name">{{item.itemname}}</span>
+                                                    <div class="col-xs-12 no-padding" data-ng-if="item.food_diet != null || item.food_diet != ''">
+                                                            <small>- {{item.food_diet}}</small>
+                                                    </div>
+                                                    <div class="col-xs-12 no-padding" data-ng-if="item.food_taste != null || item.taste != ''">
+                                                            <small>- {{item.food_taste}}</small>
+                                                    </div>
+                                                    <div data-ng-repeat="extra in item.extraItems">
+                                                        <div class="col-xs-12 no-padding" data-ng-if="extra.item_price == null || extra.item_price == ''">
+                                                            <small>- {{extra.item_name | capitalize}}</small>
+                                                        </div>
+                                                        <div data-ng-if="extra.item_price != null && extra.item_price != ''">
+                                                            <div class="col-xs-8 no-padding">
+                                                                <small>- {{extra.item_name | capitalize}}</small>
+                                                            </div>
+                                                            <div class="col-xs-4 no-padding">
+                                                                <small style="float:right;"><i class="fa fa-inr"></i> {{extra.item_price | number : 2}}</small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-1 no-padding">
+                                                    {{item.qty}}
+                                                </div>
+                                                <div class="col-xs-1 no-padding">
+                                                    <span title="Delete" data-placement="top" data-toggle="tooltip"><a onclick="delProduct(\''.$cart[$l]['itemid'].$cart[$l]['food_diet'].$cart[$l]['food_taste'].$del_sub_string.'\')" ><i class="fa fa-times fa-white" style="cursor:pointer;"></i></a></span>
+                                                </div>
+                                                <div class="col-xs-4 no-padding" style="text-align:right">
+                                                    <i class="fa fa-inr"></i> {{item.total_price}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="container-fluid">
+                                        <div class="row" style="text-align:right">
+                                            <div class="col-xs-8 no-padding">
+                                                Sub-Total:
+                                            </div>
+                                            <div class="col-xs-4 no-padding">
+                                                    <i class="fa fa-inr"></i> {{(extraInfo.total_without_tax).toFixed(2)}}
+                                            </div>
+                                            <div data-ng-repeat="vendor in cart">
+                                                <div class="col-xs-8 no-padding" data-ng-if="vendor.tax != null">
+                                                        Tax ({{vendor[0].vendor_name | capitalize}} - {{vendor.tax}}%)
+                                                </div>
+                                                <div class="col-xs-4 no-padding" data-ng-if="vendor.tax != null">
+                                                    <i class="fa fa-inr"></i> {{(vendor.vendor_total - vendor.vendor_total_without_tax).toFixed(2)}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cart-seller" style="border-width:5px">
+                                    <div class="container-fluid">
+                                        <div class="row" style="text-align:right">
+                                            <div class="col-xs-8 no-padding">
+                                                Sub-Total:
+                                            </div>
+                                            <div class="col-xs-4 no-padding">
+                                                {{(extraInfo.total_without_tax).toFixed(2)}}
+                                            </div>
+                                            <div class="col-xs-8 no-padding">
+                                                Taxes (Restaurants):
+                                            </div>
+                                            <div class="col-xs-4 no-padding">
+                                                {{(extraInfo.total - extraInfo.total_without_tax).toFixed(2)}}
+                                            </div>
+                                            <div class="col-xs-8 no-padding" data-ng-if="extraInfo.restaurants == 1">
+                                                Vendor Delivery:
+                                            </div>
+                                            <div class="col-xs-8 no-padding" data-ng-if="extraInfo.restaurants > 1">
+                                                Multi-Vendor Delivery:
+                                            </div>
+                                            <div class="col-xs-4 no-padding">
+                                                <i class="fa fa-inr"></i> {{25*extraInfo.restaurants}}
+                                            </div>
+                                            <!-- <div class="col-xs-8 no-padding">
+                                                Service Tax(Delivery - 14%):
+                                            </div>
+                                            <div class="col-xs-4 no-padding">
+                                                <i class="fa fa-inr"></i> {{(25*extraInfo.restaurants*0.14).toFixed(2)}}
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <center>
+                                                <div class="cart-total">
+                                                    <div class="col-xs-6">
+                                                        Total:
+                                                    </div>
+                                                    <div class="col-xs-6">
+                                                        {{((extraInfo.total) + (25*extraInfo.restaurants)).toFixed(2)}}
+                                                    </div>
+                                                </div>
+                                            </center>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                     </div>
                 </div>
         

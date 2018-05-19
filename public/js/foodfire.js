@@ -651,7 +651,14 @@ function updatevalue(vendorid,codeid,val){
 // 	});
 // }
 
-displayCart();
+function showCartLoader(){
+	$('#wrap-sticky').html('<ul class="spinner"><li></li><li></li><li></li><li></li><li></li></ul>');
+}
+
+function hideCartLoader(){
+	$('#wrap-sticky .spinner').hide();
+}
+// displayCart();
 //DISPLAY CART
 function displayCart(){
 

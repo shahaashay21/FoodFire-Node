@@ -59,16 +59,16 @@ exports.getCart = function (req, res) {
                     vendorPromises.push(getItemAndVendorInfo(item.itemid));
                 });
                 Promise.all(vendorPromises).then((vendorsItems) => {
-                    // console.log(vendorsItems[1]);
                     for(let i=0; i<cart.length; i++){
                         extraPromises.push(getExtraItemInfo(cart[i].itemid, cart[i].extra));
                     }
                     Promise.all(extraPromises).then(extraItemsInfo => {
                         // Add everything cart array
+                        let cartDetails = {};
                         let returnCart = [];
                         for(let i=0; i<cart.length; i++){
                             let merged = cart[i];
-                            merged.vendorsItems = vendorsItems[i];
+                            merged = _.merge(merged, vendorsItems[i]);
                             merged.extraItems = extraItemsInfo[i];
                             returnCart.push(merged);
                         }
@@ -76,7 +76,7 @@ exports.getCart = function (req, res) {
                     });
                 });
             } else {
-                res.send(JSON.stringify(cart));
+                res.send();
             }
         }).catch(ex => {
             logger.error(ex);
@@ -138,9 +138,7 @@ const getCartDetails = (req) => {
             } else {
                 // Get cart details from session and return it
                 let sessionCart = req.session.cart;
-                if (sessionCart == null || sessionCart == "") {
-                    sessionCart = "a";
-                }
+                if (sessionCart == null || sessionCart == "") sessionCart = "";
                 resolve(sessionCart);
             }
         } catch (e) {
