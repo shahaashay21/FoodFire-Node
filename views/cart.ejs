@@ -75,7 +75,7 @@
                         </div>
                         <div data-ng-repeat="vendor in cart">
                             <div class="col-xs-8 no-padding" data-ng-if="vendor.tax != null">
-                                    Tax ({{vendor[0].vendor_name | capitalize}} - {{vendor.tax}}%)
+                                    GST ({{vendor[0].vendor_name | capitalize}} - {{vendor.tax}}%)
                             </div>
                             <div class="col-xs-4 no-padding" data-ng-if="vendor.tax != null">
                                 <i class="fa fa-inr"></i> {{(vendor.vendor_total - vendor.vendor_total_without_tax).toFixed(2)}}
@@ -109,7 +109,7 @@
                             <i class="fa fa-inr"></i> {{extraInfo.delivery_charge}}
                         </div>
                         <!-- <div class="col-xs-8 no-padding">
-                            Service Tax(Delivery - 14%):
+                            GST(Delivery - 14%):
                         </div>
                         <div class="col-xs-4 no-padding">
                             <i class="fa fa-inr"></i> {{(25*extraInfo.restaurants*0.14).toFixed(2)}}
