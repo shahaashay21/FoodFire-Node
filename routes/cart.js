@@ -186,8 +186,10 @@ function addCartIntoDb(req) {
             sessionCart = req.session.cart;
             req.session.cart = null; // Empty session cart
             let userCartQuery = "SELECT * FROM cart WHERE cusunkid=" + req.session.user.cusunkid;
-            DB.sequelize.query(userCartQuery, { type: DB.sequelize.QueryTypes.SELECT }).then(userCart => {
-                if (sessionCart != null && sessionCart != "" && userCart != null && userCart != "") {
+            // DB.sequelize.query(userCartQuery, { type: DB.sequelize.QueryTypes.SELECT }).then(userCart => {
+            DB.Cart.findAll({where: {cusunkid: req.session.user.cusunkid}}).then(userCart => {
+                if (sessionCart != null && sessionCart != "") {
+                    logger.info("Something to add into DB");
                     sessionCart.forEach(function (item) {
                         let isItemExist = false;
                         userCart.forEach(function (userItem) {
@@ -273,6 +275,17 @@ exports.logSession = function (req, res) {
     req.session.cart = "";
     showSession(req)
         .then(() => {
-            res.send();
+            // logger.info(req.session);
+            if(typeof req.session.userAuthenticated != "undefined" && req.session.userAuthenticated){
+                DB.Cart.destroy({where: {'cusunkid': req.session.user.cusunkid}}).then(() => {
+                    res.send();
+                });
+                // DB.Cart.findAll({where: {cusunkid: req.session.user.cusunkid}}).then(userCart => {
+                //     logger.info("Something");
+                //     logger.info(userCart);
+                // });
+            } else {
+                res.send();
+            }
         });
 }

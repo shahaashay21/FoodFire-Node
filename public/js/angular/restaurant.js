@@ -1,6 +1,8 @@
-app.controller("restaurant", function($scope, $http, $location, $window, service){
+app.controller("restaurant", function($scope, $http, $location, $window, signService, commonService, cartService){
     var url = $location.absUrl().split('?')[0];
     $scope.initialize = function(vendor_url){
+        $scope.signService = signService;
+        $scope.cartService = cartService;
         $scope.getRestaurantProducts(vendor_url);
     }
     $scope.getRestaurantProducts = function(vendor_url){
@@ -30,6 +32,7 @@ app.controller("restaurant", function($scope, $http, $location, $window, service
             $('body').removeClass('modal-open');
             $('.modal-backdrop').remove();
             $('body').css('padding-right','0px');
+            $('.product-detail-qty').val(1);
             
             $('#productModal').modal('show');
 		}, function error(response){

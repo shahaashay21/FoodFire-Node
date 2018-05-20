@@ -1,10 +1,11 @@
 var sellerdata = "";
 //RECENT ACTIVITY
-app.controller("search", function($scope, $http, $location){
+app.controller("search", function($scope, $http, $location, $rootScope, signService, commonService, cartService){
 
 	$scope.initialize = function(){
+		$scope.signService = signService;
+		$scope.cartService = cartService;
 		$scope.getRecentActivity();
-
 		if(getQueryVariable('q')){
 			$scope.getRestaurants(getQueryVariable('q'));
 		}else{

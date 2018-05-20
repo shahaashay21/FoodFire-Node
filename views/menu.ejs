@@ -44,7 +44,7 @@
 <div class="modal fade login-modal" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="myModalLabel">
   <div class="modal-dialog">
     <div class="modal-content">
-    	<form class="loginForm" method="post">
+    	<form ng-submit="signService.login()" class="loginForm" method="post">
 	    	<div class="modal-header" style="padding-bottom:5px">
 	    		<!-- <a class="close-login-modal" data-dismiss="modal"></a> -->
 	    		<button type="button" class="ff-btn-modal-close-red pull-right" data-dismiss="modal" style="margin-top:8px">
@@ -365,7 +365,7 @@
 						</ul>
 					</span>
 					&nbsp;<span style="border: 1px solid #db2e2e;"></span>
-					<span class="logout">Log out</span>
+					<span data-ng-click="signService.logout()" class="logout">Log out</span>
 				</center>
 			</div>
 		<% }else{ %>
@@ -392,7 +392,7 @@
 					</ul>
 				</span>
 				&nbsp;<span style="border: 1px solid #db2e2e;"></span>
-				<span class="logout">Log out</span>
+				<span data-ng-click="signService.logout()" class="logout">Log out</span>
 			</center>
 		</div>
 
