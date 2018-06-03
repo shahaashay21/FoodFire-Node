@@ -13,7 +13,6 @@ exports.register = function (req, res, next) {
   try {
     logger.info("Users page ::: Function: register");
     // Just to check all req information
-    // logger.info(req.body);
     let email = req.body.email;
     let password = req.body.password;
     let name = req.body.name;
@@ -91,7 +90,6 @@ exports.register = function (req, res, next) {
 exports.login = function (req, res) {
   logger.info("Users page ::: Function: login");
   // Just to check all req information
-  // logger.info(req.body);
   let email = req.body.email;
   let password = req.body.password;
 

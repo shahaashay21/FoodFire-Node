@@ -813,35 +813,35 @@ function delProduct(data){
 }
 
 //FETCH MODAL OF NEW ADDRESS
-function newAddress(){
-	var newaddress = $.ajax({
-		type: 'POST',
-		url: '/newaddress',
-		data: '_csrf='+_csrf,
-		dataType: 'json',
-		timeout: 4000,
-		success:function(response){
-			newaddress.abort();
-			$('.newaddressbox').html(response);
-			$('#newaddress').modal('hide');
-			$('body').removeClass('modal-open');
-			$('.modal-backdrop').remove();
-			$('body').css('padding-right','0px');
-			$('#newaddress').modal('show');
+// function newAddressModel(){
+// 	var newaddress = $.ajax({
+// 		type: 'POST',
+// 		url: '/getcities',
+// 		data: '_csrf='+_csrf,
+// 		dataType: 'json',
+// 		timeout: 4000,
+// 		success:function(response){
+// 			newaddress.abort();
+// 			// $('.newaddressbox').html(response);
+// 			$('#newaddress').modal('hide');
+// 			$('body').removeClass('modal-open');
+// 			$('.modal-backdrop').remove();
+// 			$('body').css('padding-right','0px');
+// 			$('#newaddress').modal('show');
 
-			if((navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i))) {
-				 $("#newaddress .modal-body").css("max-height","400px");
-				 $("#newaddress .modal-body").css("overflow","auto");
-			}
-		},
-		error: function(jqXHR, textStatus, errorThrown) {
-	        if(textStatus=="timeout") {
-	           $.ajax(this);
-	        } 
-	    }
-	});
+// 			if((navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i))) {
+// 				 $("#newaddress .modal-body").css("max-height","400px");
+// 				 $("#newaddress .modal-body").css("overflow","auto");
+// 			}
+// 		},
+// 		error: function(jqXHR, textStatus, errorThrown) {
+// 	        if(textStatus=="timeout") {
+// 	           $.ajax(this);
+// 	        } 
+// 	    }
+// 	});
 
-}
+// }
 
 //REMOVE ADDRESS
 function addressOperation(addid,operation){

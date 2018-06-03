@@ -56,7 +56,7 @@ exports.getCart = function (req, res) {
                 let vendorPromises = [];
                 let extraPromises = [];
                 cart.forEach(function(item){
-                    vendorPromises.push(getItemAndVendorInfo(item.itemid));
+                    vendorPromises.push(getItemsAndVendorInfo(item.itemid));
                 });
                 Promise.all(vendorPromises).then((vendorsItems) => {
                     for(let i=0; i<cart.length; i++){
@@ -84,7 +84,7 @@ exports.getCart = function (req, res) {
         });
 };
 
-const getItemAndVendorInfo = function (itemId) {
+const getItemsAndVendorInfo = function (itemId) {
     logger.info("Cart ::: getVendorInfo");
     try{
         return new Promise((resolve, reject) => {

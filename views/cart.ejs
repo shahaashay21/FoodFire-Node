@@ -53,13 +53,13 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xs-1 no-padding">
+                            <div class="col-xs-2 no-padding" style="text-align: center">
                                 {{item.qty}}
                             </div>
                             <div class="col-xs-1 no-padding">
-                                <span title="Delete" data-placement="top" data-toggle="tooltip"><a onclick="delProduct(\''.$cart[$l]['itemid'].$cart[$l]['food_diet'].$cart[$l]['food_taste'].$del_sub_string.'\')" ><i class="fa fa-times fa-white" style="cursor:pointer;"></i></a></span>
+                                <span title="Delete" data-placement="top" data-toggle="tooltip"><a onclick="delProduct(\''.$cart[$l]['itemid'].$cart[$l]['food_diet'].$cart[$l]['food_taste'].$del_sub_string.'\')" ><i class="fa fa-trash fa-white" style="cursor:pointer;"></i></a></span>
                             </div>
-                            <div class="col-xs-4 no-padding" style="text-align:right">
+                            <div class="col-xs-3 no-padding" style="text-align:right">
                                 <i class="fa fa-inr"></i> {{item.total_price}}
                             </div>
                         </div>
@@ -88,7 +88,7 @@
                 <div class="container-fluid">
                     <div class="row" style="text-align:right">
                         <div class="col-xs-8 no-padding">
-                            Sub-Total:
+                            Total:
                         </div>
                         <div class="col-xs-4 no-padding">
                             {{(extraInfo.total_without_tax).toFixed(2)}}
@@ -121,7 +121,7 @@
                         <center>
                             <div class="cart-total">
                                 <div class="col-xs-6">
-                                    Total:
+                                    Grand Total:
                                 </div>
                                 <div class="col-xs-6">
                                     <!-- {{((extraInfo.total) + (25*extraInfo.restaurants)).toFixed(2)}} -->
@@ -135,7 +135,7 @@
             <div class="cart-seller" data-ng-show="!checkoutBtn">
                 <div class="row">
                     <div class="col-sm-6 hidden-xs">
-                        <a href="http://www.foodfire.in/search" class="btn btn-primary cart-checkout">
+                        <a href="/search" class="btn btn-primary cart-checkout">
                             More Hungry
                         </a>
                     </div>
@@ -146,7 +146,7 @@
                     </div>
                     
                     <div class="visible-xs col-xs-6">
-                        <a href="http://www.foodfire.in/search" style="font-size:13px" class="btn btn-primary cart-checkout">
+                        <a href="/search" style="font-size:13px" class="btn btn-primary cart-checkout">
                             More Hungry
                         </a>
                     </div>
@@ -159,7 +159,7 @@
             </div>
             <div class="cart-seller" data-ng-show="checkoutBtn">
                 <div class="row">
-                    <a href="http://www.foodfire.in/checkout" class="btn btn-success cart-checkout">
+                    <a href="/checkout" class="btn btn-success cart-checkout">
                         Checkout
                     </a>
                 </div>

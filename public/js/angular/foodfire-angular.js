@@ -9,7 +9,6 @@ app.filter('capitalize', function() {
 
 app.factory('cartService', function($http, $rootScope, commonService){
     function evaluateCart(cart){
-        console.log("evaluating...");
         let extraInfo = {};
         let delivery_time = 0;
         let grand_total = 0;
@@ -63,11 +62,9 @@ app.factory('cartService', function($http, $rootScope, commonService){
             extraInfo.grand_total = parseInt(total + extraInfo.delivery_charge);
         }
         $rootScope.extraInfo = extraInfo;
-        console.log(total);
-        console.log(total_without_tax);
-        console.log(total_qty);
-        var url = $(location).attr('href');
-        console.log(url);
+        // console.log(total);
+        // console.log(total_without_tax);
+        // console.log(total_qty);
     };
     function displayCart(){
         showCartLoader();
@@ -92,23 +89,27 @@ app.factory('cartService', function($http, $rootScope, commonService){
                 $rootScope.del_time = delivery_time;
                 evaluateCart($rootScope.cart);
                 // console.log($rootScope.cart);
-                if(url.indexOf("www.foodfire.in/checkout")+1){
+                if(url.indexOf("/checkout")+1){
                     $rootScope.styleCartVendorDetails = {"max-height": "none"};
+                    $rootScope.isCheckout = true;
                 } else {
                     $rootScope.checkoutBtn = 1;
                 }
             } else {
                 $rootScope.cart = "";
+                $rootScope.extraInfo = "";
                 if(url.indexOf("www.foodfire.in/checkout")+1){
                     window.location="http://www.foodfire.in";
                 }
             }
-            $('.product-total').html($rootScope.extraInfo.total_qty);
-            $('.product-total-price').html('<i class="fa fa-inr"></i>'+ $rootScope.extraInfo.grand_total);
-            if($rootScope.extraInfo.total && $rootScope.extraInfo.total != null){
+            if(typeof $rootScope.extraInfo === 'object' && $rootScope.extraInfo.total && $rootScope.extraInfo.total != null){
                 $('.cart-dropdown').addClass('dropdown-menu');
+                $('.product-total').html($rootScope.extraInfo.total_qty);
+                $('.product-total-price').html('<i class="fa fa-inr"></i>'+ $rootScope.extraInfo.grand_total);
             }else{
                 $('.cart-dropdown').removeClass('dropdown-menu');
+                $('.product-total').html("");
+                $('.product-total-price').html("");
             }
             if($(window).height() > 590){
                 if(url.indexOf("www.foodfire.in/vendor/")+1){

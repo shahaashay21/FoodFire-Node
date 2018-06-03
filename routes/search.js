@@ -61,12 +61,12 @@ exports.restaurants = function (req, res) {
         let visit = " (select vendorunkid, COUNT(*) as visits from rate where code_id=4 group by vendorunkid) as vi ON v.vendorunkid = vi.vendorunkid";
         let votes = " (select vendorunkid, COUNT(*) as votes from rate where code_id=5 group by vendorunkid) as vo ON v.vendorunkid = vo.vendorunkid";
 
-        let where = " where v.isactive = 1 and v.vendor_name like '%" + q + "%' order by v.vendor_name";
+        let where = " where v.isactive = 1 and v.vendor_name like :search_name order by v.vendor_name";
         let final_query = restaurants_query + " LEFT JOIN " + likes + " LEFT JOIN " + rating + " LEFT JOIN " + favorite + " LEFT JOIN " + visit + " LEFT JOIN " + votes + where;
 
 
         // logger.info(final_query);
-        DB.sequelize.query(final_query, { type: DB.sequelize.QueryTypes.SELECT }).then(restaurants => {
+        DB.sequelize.query(final_query, { replacements: { search_name: '%'+q+'%'  }, type: DB.sequelize.QueryTypes.SELECT }).then(restaurants => {
             res.send(JSON.stringify(restaurants));
         });
     } catch (ex) {

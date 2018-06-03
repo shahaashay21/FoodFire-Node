@@ -40,6 +40,8 @@ var users = require('./routes/users');
 var search = require('./routes/search');
 var restaurant = require('./routes/restaurant');
 var cart = require('./routes/cart');
+var checkout = require('./routes/checkout');
+var address = require('./routes/address');
 
 //Middleware files
 Mlog = require('./middleware/Mlog');
@@ -116,6 +118,9 @@ app.get('/search', search.index);
 //RESTAURANT PAGE
 app.get('/vendor/:city/:vendor_url', restaurant.index);
 
+//CHECKOOUT PAGE
+app.get('/checkout', checkout.index);
+
 
 
 
@@ -158,6 +163,12 @@ app.post('/cart/add', cart.addCart);
 
 //Get cart
 app.post('/cart/get', cart.getCart);
+
+//Get cities
+app.post('/getcities', address.getcities);
+
+//Get areas
+app.post('/getareas', address.getareas);
 
 
 // catch 404 and forward to error handler
