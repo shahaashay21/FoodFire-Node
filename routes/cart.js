@@ -1,5 +1,8 @@
 //LIBRARY
 let _ = require('lodash');
+let moment = require('moment');
+moment().tz("America/Los_Angeles").format();
+let validator = require('validator');
 //HELPERS
 let alert = require('../helper/alert');
 let logger = require('../middleware/winston').logger;
@@ -12,38 +15,44 @@ let DB = require('../db/db');
 exports.addCart = function (req, res) {
     logger.info("Cart ::: addCart");
     // Get all the items
+    let error = false;
     let itemid = req.body.itemid;
+    if(!common.isEmpty(itemid) && isNaN(itemid)) error = true;
     let qty = req.body.qty;
+    if(!common.isEmpty(qty) && isNaN(qty)) error = true;
     let food_diet = req.body.food_diet;
     let food_taste = req.body.food_taste;
 
-    let extra = Array();
-
-    // Get category of each item to get the item from data
-    let extra_query = "SELECT distinct(category) FROM subitems WHERE itemid = " + itemid;
-    DB.sequelize.query(extra_query, { type: DB.sequelize.QueryTypes.SELECT }).then(extraCategory => {
-        _.forEach(extraCategory, function (category) {
-            let currentCategoryValues = req.body[category.category.toLowerCase()];
-            if (currentCategoryValues != undefined && currentCategoryValues != "") {
-                let valuesString = currentCategoryValues.toString();
-                extra.push(valuesString);
-            }
-        });
-        extra.sort();
-        extra = extra.toString();
-
-        // First add all the items into the session
-        addIntoSession(req, itemid, qty, food_diet, food_taste, extra)
-            .then(() => {
-                return addCartIntoDb(req);
-            }).then(result => {
-                return showSession(req);
-            }).then(() => {
-                res.send(JSON.stringify("success"));
-            }).catch(() => {
-                res.send(JSON.stringify("error"));
+    if(!error){
+        let extra = Array();
+        // Get category of each item to get the item from data
+        let extra_query = "SELECT distinct(category) FROM subitems WHERE itemid = " + itemid;
+        DB.sequelize.query(extra_query, { type: DB.sequelize.QueryTypes.SELECT }).then(extraCategory => {
+            _.forEach(extraCategory, function (category) {
+                let currentCategoryValues = req.body[category.category.toLowerCase()];
+                if (currentCategoryValues != undefined && currentCategoryValues != "") {
+                    let valuesString = currentCategoryValues.toString();
+                    extra.push(valuesString);
+                }
             });
-    });
+            extra.sort();
+            extra = extra.toString();
+
+            // First add all the items into the session
+            addIntoSession(req, itemid, qty, food_diet, food_taste, extra)
+                .then(() => {
+                    return addCartIntoDb(req);
+                }).then(result => {
+                    return showSession(req);
+                }).then(() => {
+                    res.send(JSON.stringify("success"));
+                }).catch(() => {
+                    res.send(JSON.stringify("error"));
+                });
+        });
+    } else {
+        res.send(JSON.stringify("error"));
+    }
 };
 
 /*** Getting cart items ***/
@@ -83,6 +92,75 @@ exports.getCart = function (req, res) {
             res.send(JSON.stringify("error"));
         });
 };
+
+/*** Deleting cart item ***/
+exports.deleteCartItem = function (req, res) {
+    logger.info("Cart ::: deleteCartItem");
+
+    let error = false;
+    var cartid = req.body.cartid;
+    if(common.isEmpty(cartid) || isNaN(cartid)) error = true;
+
+    if(!error){
+        if (req.session.userAuthenticated) {
+            // Delete it from a DB
+            DB.Cart.destroy({where: {cartid : cartid}}).then(deleted => {
+                res.send(JSON.stringify("success"));
+            });
+        } else {
+            // Delete it from a session cart
+            let sessionCart = req.session.cart;
+            let newSessionCart = [];
+            if (sessionCart != undefined && sessionCart != "") {
+                sessionCart.forEach(function (item) {
+                    if (item.cartid != cartid) {
+                        newSessionCart.push(item);
+                    }
+                });
+            }
+            req.session.cart = newSessionCart;
+            res.send(JSON.stringify("success"));
+        }
+    } else {
+        res.send(JSON.stringify("error"));
+    }
+}
+
+/*** Updating cart item ***/
+exports.updateCartItem = function (req, res){
+    logger.info("Cart ::: updateCartItem");
+
+    let error = false;
+    let cartid = req.body.cartid;
+    let qty = req.body.qty;
+    if(common.isEmpty(cartid) || isNaN(cartid)) error = true;
+    if(common.isEmpty(qty) || isNaN(qty)) error = true;
+
+    if(!error){
+        if (req.session.userAuthenticated) {
+            // Update it from a DB
+            DB.Cart.update({qty: qty},{where: {cartid : cartid}}).then(deleted => {
+                res.send(JSON.stringify("success"));
+            });
+        } else {
+            // Update it from a session cart
+            let sessionCart = req.session.cart;
+            let newSessionCart = [];
+            if (sessionCart != undefined && sessionCart != "") {
+                sessionCart.forEach(function (item) {
+                    if (item.cartid == cartid) {
+                        item.qty = qty;
+                    }
+                    newSessionCart.push(item);
+                });
+            }
+            req.session.cart = newSessionCart;
+            res.send(JSON.stringify("success"));
+        }
+    } else {
+        res.send(JSON.stringify("error"));
+    }
+}
 
 const getItemsAndVendorInfo = function (itemId) {
     logger.info("Cart ::: getVendorInfo");
@@ -151,8 +229,9 @@ const getCartDetails = (req) => {
 function addIntoSession(req, itemid, qty, food_diet, food_taste, extra, callback) {
     logger.info("Cart ::: addIntoSession");
     return new Promise((resolve, reject) => {
+        let cartid = moment().valueOf();
         let cart = {
-            itemid, qty, food_diet, food_taste, extra
+            cartid, itemid, qty, food_diet, food_taste, extra
         };
         let isItemExist = false;
         let sessionCart = req.session.cart;
@@ -166,7 +245,7 @@ function addIntoSession(req, itemid, qty, food_diet, food_taste, extra, callback
             });
             if (!isItemExist) {
                 req.session.cart.push(cart);
-                logger.info("Item added into the session");
+                logger.info("Item added into the session cart");
             }
         } else {
             req.session.cart = [cart];

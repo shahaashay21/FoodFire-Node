@@ -81,6 +81,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/modules', express.static('node_modules'));
 
 app.use(session({
     key: 'FoodFire',
@@ -158,8 +159,14 @@ app.post('/restaurantsProducts', restaurant.restaurantsProducts);
 //Get item details
 app.post('/getItem', restaurant.getItem);
 
-//Add item into cart
+//Add item into a cart
 app.post('/cart/add', cart.addCart);
+
+//Delete item from a cart
+app.post('/cart/delete', cart.deleteCartItem);
+
+//Update item from a cart
+app.post('/cart/update', cart.updateCartItem);
 
 //Get cart
 app.post('/cart/get', cart.getCart);

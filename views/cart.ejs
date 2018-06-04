@@ -54,10 +54,11 @@
                                 </div>
                             </div>
                             <div class="col-xs-2 no-padding" style="text-align: center">
-                                {{item.qty}}
+                                <input type="number" min="1" max="20" data-ng-click="cartService.updateProduct(item.cartid, qty$index)" data-ng-blur="cartService.updateProduct(item.cartid, qty$index)" data-ng-model="qty$index" data-ng-value="{{item.qty}}" style="width: 35px">
+                                <!-- {{item.qty}} -->
                             </div>
                             <div class="col-xs-1 no-padding">
-                                <span title="Delete" data-placement="top" data-toggle="tooltip"><a onclick="delProduct(\''.$cart[$l]['itemid'].$cart[$l]['food_diet'].$cart[$l]['food_taste'].$del_sub_string.'\')" ><i class="fa fa-trash fa-white" style="cursor:pointer;"></i></a></span>
+                                <span title="Delete" data-ng-click="cartService.deleteProduct(item.cartid)" data-placement="top" data-toggle="tooltip"><a><i class="fa fa-trash fa-white" style="cursor:pointer;"></i></a></span>
                             </div>
                             <div class="col-xs-3 no-padding" style="text-align:right">
                                 <i class="fa fa-inr"></i> {{item.total_price}}

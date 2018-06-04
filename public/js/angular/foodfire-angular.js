@@ -128,11 +128,67 @@ app.factory('cartService', function($http, $rootScope, commonService){
             hideCartLoader();
         });
     };
+    function deleteProduct(cartid){
+        $http({
+            method: 'POST',
+            url: '/cart/delete',
+            data: {_csrf, cartid},
+            dataType: 'json',
+            timeout: 4000
+        }).then(function success(response){
+            displayCart();
+        }, function (error){
+            if(error.statusText=="timeout") {
+                deleteProduct(cartid);
+            }
+        });
+    };
+    function updateProduct(cartid, qty){
+        var error = false;
+        if(qty == undefined || qty == "" || qty == null) {
+            // _.forEach($rootScope.cart, function(items, vendorId){
+            //     _.forEach(items, function(itemDetails, itemid){
+            //         if($rootScope.cart[vendorId][itemid].cartid == cartid)
+            //             $rootScope.itemQty[intemIndex] = $rootScope.cart[vendorId][itemid].qty;
+            //     });
+            // });
+            error = true;
+        }
+        _.forEach($rootScope.cart, function(items, vendorId){
+            _.forEach(items, function(itemDetails, itemid){
+                if($rootScope.cart[vendorId][itemid].cartid == cartid && $rootScope.cart[vendorId][itemid].qty == qty ) {
+                    console.log("SAME");
+                    error = true;
+                }
+            });
+        });
+        if(!error){
+            $http({
+                method: 'POST',
+                url: '/cart/update',
+                data: {_csrf, cartid, qty},
+                dataType: 'json',
+                timeout: 4000
+            }).then(function success(response){
+                displayCart();
+            }, function (error){
+                if(error.statusText=="timeout") {
+                    updateProduct(cartid, qty);
+                }
+            });
+        }
+    };
     return{
         displayCart: function(){
             displayCart()
+        },
+        deleteProduct: function(cartid){
+            deleteProduct(cartid);
+        },
+        updateProduct: function (cartid, qty){
+            updateProduct(cartid, qty);
         }
-    }
+    };
 });
 
 app.factory('signService', function($http, $rootScope, cartService, commonService){
