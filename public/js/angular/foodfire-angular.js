@@ -185,7 +185,7 @@ app.factory('cartService', function($http, $rootScope, commonService){
     };
 });
 
-app.factory('signService', function($http, $rootScope, cartService, commonService){
+app.factory('signService', function($http, $rootScope, cartService, commonService, addressService){
     function logout(){
         $http({
 			method: "POST",
@@ -253,7 +253,13 @@ app.factory('signService', function($http, $rootScope, cartService, commonServic
                 $(".mob-user-name").html("<i class='fa fa-user fa-fw'></i>");
                 $(".user-name").html(toTitleCase(response.message.username)+' <i class="fa fa-caret-down"></i>');
                 cartService.displayCart();
+                addressService.getAddress();
                 $rootScope.userAuthenticated = true;
+
+                var url = $(location).attr('href');
+                if(url.indexOf("/checkout")+1){
+                    $scope.getAddress();
+                }
             }
 
             // alertline('alert-notify-warning','You have not verified your Email. <b>Please verify</b>');
@@ -268,7 +274,41 @@ app.factory('signService', function($http, $rootScope, cartService, commonServic
             login(page);
         }
     }
-})
+});
+
+app.factory('addressService', function($http, $rootScope){
+    return{
+        getAddress: function () {
+            $http({
+                method: 'POST',
+                url: "/address/get",
+                data: {'_csrf':_csrf},
+                dataType: 'jsonp',
+                timeout: 4000
+            }).then(function success(response){
+                $rootScope.addresses = null;
+                $rootScope.isAddressAvailable = true;
+                if(response.data == "No address found"){
+                    $rootScope.isAddressAvailable = false;
+                } else if(response.data == "Please sign in to get an address"){
+
+                } else {
+                    $rootScope.isDefaultAddress = false;
+                    $.each(response.data, function(i,address){
+                        if(address.defaultadd == 1){
+                            $rootScope.isDefaultAddress = true;
+                        }
+                    });
+                    $rootScope.addresses = response.data;
+                }
+            }, function error(error){
+                if(error.statusText=="timeout") {
+                    $rootScope.getAddress();
+                }
+            });
+        }
+    }
+});
 
 app.factory('commonService', function($http, $rootScope){
     return{

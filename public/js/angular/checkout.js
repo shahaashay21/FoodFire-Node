@@ -1,9 +1,10 @@
-app.controller("checkout", function($scope, $rootScope, $http, $location, $window, signService, commonService, cartService){
+app.controller("checkout", function($scope, $rootScope, $http, $location, $window, signService, commonService, cartService, addressService){
     $scope.initialize = function(userAuthenticated){
         $rootScope.userAuthenticated = userAuthenticated;
         $scope.signService = signService;
         $scope.cartService = cartService;
-        $scope.getAddress();
+        $scope.addressService = addressService;
+        $scope.addressService.getAddress();
         $scope.isAddressAvailable = true;
         $scope.isDefaultAddress = false;
     }
@@ -83,7 +84,7 @@ app.controller("checkout", function($scope, $rootScope, $http, $location, $windo
                 if(response.data = "Added"){
                     $("#newaddress").modal("hide");
                     alertline('alert-notify-success','<b>Address Added Successfully.</b>');
-                    $scope.getAddress();
+                    $scope.addressService.getAddress();
                 }
             }
         }, function error(error){
@@ -93,33 +94,33 @@ app.controller("checkout", function($scope, $rootScope, $http, $location, $windo
         });
     }
 
-    $scope.getAddress = function () {
-        $http({
-            method: 'POST',
-            url: "/address/get",
-            data: {'_csrf':_csrf},
-            dataType: 'jsonp',
-            timeout: 4000
-        }).then(function success(response){
-            $scope.addresses = null;
-            $scope.isAddressAvailable = true;
-            if(response.data == "No address found"){
-                $scope.isAddressAvailable = false;
-            } else if(response.data == "Please sign in to get an address"){
+    // $scope.getAddress = function () {
+    //     $http({
+    //         method: 'POST',
+    //         url: "/address/get",
+    //         data: {'_csrf':_csrf},
+    //         dataType: 'jsonp',
+    //         timeout: 4000
+    //     }).then(function success(response){
+    //         $scope.addresses = null;
+    //         $scope.isAddressAvailable = true;
+    //         if(response.data == "No address found"){
+    //             $scope.isAddressAvailable = false;
+    //         } else if(response.data == "Please sign in to get an address"){
 
-            } else {
-                $scope.isDefaultAddress = false;
-                $.each(response.data, function(i,address){
-                    if(address.defaultadd == 1){
-                        $scope.isDefaultAddress = true;
-                    }
-                });
-                $scope.addresses = response.data;
-            }
-        }, function error(error){
-            if(error.statusText=="timeout") {
-                $scope.getAreas();
-            }
-        });
-    }
+    //         } else {
+    //             $scope.isDefaultAddress = false;
+    //             $.each(response.data, function(i,address){
+    //                 if(address.defaultadd == 1){
+    //                     $scope.isDefaultAddress = true;
+    //                 }
+    //             });
+    //             $scope.addresses = response.data;
+    //         }
+    //     }, function error(error){
+    //         if(error.statusText=="timeout") {
+    //             $scope.getAddress();
+    //         }
+    //     });
+    // }
 });
