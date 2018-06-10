@@ -1,9 +1,11 @@
 app.controller("checkout", function($scope, $rootScope, $http, $location, $window, signService, commonService, cartService){
-    $scope.initialize = function(){
+    $scope.initialize = function(userAuthenticated){
+        $rootScope.userAuthenticated = userAuthenticated;
         $scope.signService = signService;
         $scope.cartService = cartService;
-        cartService.displayCart();
-        // console.log("I've been initialized");
+        $scope.getAddress();
+        $scope.isAddressAvailable = true;
+        $scope.isDefaultAddress = false;
     }
 
     $scope.newAddressModel = function(){
@@ -78,10 +80,45 @@ app.controller("checkout", function($scope, $rootScope, $http, $location, $windo
                     $("#"+i).addClass("inputerr");
                     $("#"+i).after("<div class=\'col-xs-12 ff-text-danger\'>"+item+"</div>");
                 });
+                if(response.data = "Added"){
+                    $("#newaddress").modal("hide");
+                    alertline('alert-notify-success','<b>Address Added Successfully.</b>');
+                    $scope.getAddress();
+                }
             }
         }, function error(error){
             if(error.statusText=="timeout") {
                 $scope.addNewAddress();
+            }
+        });
+    }
+
+    $scope.getAddress = function () {
+        $http({
+            method: 'POST',
+            url: "/address/get",
+            data: {'_csrf':_csrf},
+            dataType: 'jsonp',
+            timeout: 4000
+        }).then(function success(response){
+            $scope.addresses = null;
+            $scope.isAddressAvailable = true;
+            if(response.data == "No address found"){
+                $scope.isAddressAvailable = false;
+            } else if(response.data == "Please sign in to get an address"){
+
+            } else {
+                $scope.isDefaultAddress = false;
+                $.each(response.data, function(i,address){
+                    if(address.defaultadd == 1){
+                        $scope.isDefaultAddress = true;
+                    }
+                });
+                $scope.addresses = response.data;
+            }
+        }, function error(error){
+            if(error.statusText=="timeout") {
+                $scope.getAreas();
             }
         });
     }

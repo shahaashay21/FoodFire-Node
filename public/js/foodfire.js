@@ -652,107 +652,109 @@ function updatevalue(vendorid,codeid,val){
 // }
 
 function showCartLoader(){
+	$("#cart").hide();
 	$('#wrap-sticky').html('<ul class="spinner"><li></li><li></li><li></li><li></li><li></li></ul>');
 }
 
 function hideCartLoader(){
 	$('#wrap-sticky .spinner').hide();
+	$("#cart").show();
 }
 // displayCart();
 //DISPLAY CART
-function displayCart(){
+// function displayCart(){
 
-	var dispalyCart = $.ajax({
-	 		type: 'POST',
-	 		url: '/cart/get',
-	 		data: '_csrf='+_csrf,
-	 		dataType: "json",
-	 		timeout: 4000,
-	 		beforeSend:function(){
-	 			$('#wrap-sticky').html('<ul class="spinner"><li></li><li></li><li></li><li></li><li></li></ul>');
-	 		},
-	 		success:function(response){
-	 			// console.log(response);
-	 			// if(response['modal'] == 1){
-	 				// $('#prodetail').html(response['product']);
-	 				var url = $(location).attr('href');
-	 				if(response['qty'] == 0){
-	 					if(url.indexOf("www.foodfire.in/checkout")+1){
-	 						window.location="http://www.foodfire.in";
-	 						return;
-	 					}
-	 				}
-	 				$('#wrap-sticky .spinner').hide();
-	 				$('#wrap-sticky').html(response);
-	 				if(url.indexOf("www.foodfire.in/checkout")+1){
-	 					if(response['qty'] == 0){
-	 						window.location="http://www.foodfire.in";
-	 					}
-	 					$('.cart-vendor-details').css("max-height","none");
-	 					$('.cart-vendor').append('<div class="cart-seller">\
-				  				<div class="row">\
-				  					<div class="col-sm-6 hidden-xs">\
-					  					<a href="http://www.foodfire.in/search" class="btn btn-primary cart-checkout">\
-					  						More Hungry\
-					  					</a>\
-					  				</div>\
-					  				<div class="col-sm-6 hidden-xs">\
-					  					<a onclick="finalOrder();" class="btn btn-success cart-checkout">\
-					  						Place Order\
-					  					</a>\
-					  				</div>\
-					  				\
-					  				<div class="visible-xs col-xs-6">\
-					  					<a href="http://www.foodfire.in/search" style="font-size:13px" class="btn btn-primary cart-checkout">\
-					  						More Hungry\
-					  					</a>\
-					  				</div>\
-					  				<div class="visible-xs col-xs-6">\
-					  					<a onclick="finalOrder()" style="font-size:13px" class="btn btn-success cart-checkout">\
-					  						Place Order\
-					  					</a>\
-					  				</div>\
-				  				</div>\
-				  			</div>');
-	 				}else{
-	 					$('.cart-vendor').append('<div class="cart-seller">\
-				  				<div class="row">\
-				  					<a href="http://www.foodfire.in/checkout" class="btn btn-success cart-checkout">\
-				  						Checkout\
-				  					</a>\
-				  				</div>\
-				  			</div>');
-	 				}
-	 				$('#productModal').modal('hide');
-	 				$('.product-total').html(response['qty']);
-	 				$('.product-total-price').html('<i class="fa fa-inr"></i>'+ response['total']);
-	 				if(response['total']){
-	 					$('.cart-dropdown').addClass('dropdown-menu');
-	 				}else{
-	 					$('.cart-dropdown').removeClass('dropdown-menu');
-	 				}
-	 				if($(window).height() > 590){
-	 					if(url.indexOf("www.foodfire.in/vendor/")+1){
-	 						// alert(url);
-	 						$("#wrap-sticky").sticky({topSpacing:-10,bottomSpacing:120, getWidthFrom: '#product-cart' });	
-	 					}
+// 	var dispalyCart = $.ajax({
+// 	 		type: 'POST',
+// 	 		url: '/cart/get',
+// 	 		data: '_csrf='+_csrf,
+// 	 		dataType: "json",
+// 	 		timeout: 4000,
+// 	 		beforeSend:function(){
+// 	 			$('#wrap-sticky').html('<ul class="spinner"><li></li><li></li><li></li><li></li><li></li></ul>');
+// 	 		},
+// 	 		success:function(response){
+// 	 			// console.log(response);
+// 	 			// if(response['modal'] == 1){
+// 	 				// $('#prodetail').html(response['product']);
+// 	 				var url = $(location).attr('href');
+// 	 				if(response['qty'] == 0){
+// 	 					if(url.indexOf("www.foodfire.in/checkout")+1){
+// 	 						window.location="http://www.foodfire.in";
+// 	 						return;
+// 	 					}
+// 	 				}
+// 	 				$('#wrap-sticky .spinner').hide();
+// 	 				$('#wrap-sticky').html(response);
+// 	 				if(url.indexOf("www.foodfire.in/checkout")+1){
+// 	 					if(response['qty'] == 0){
+// 	 						window.location="http://www.foodfire.in";
+// 	 					}
+// 	 					$('.cart-vendor-details').css("max-height","none");
+// 	 					$('.cart-vendor').append('<div class="cart-seller">\
+// 				  				<div class="row">\
+// 				  					<div class="col-sm-6 hidden-xs">\
+// 					  					<a href="http://www.foodfire.in/search" class="btn btn-primary cart-checkout">\
+// 					  						More Hungry\
+// 					  					</a>\
+// 					  				</div>\
+// 					  				<div class="col-sm-6 hidden-xs">\
+// 					  					<a onclick="finalOrder();" class="btn btn-success cart-checkout">\
+// 					  						Place Order\
+// 					  					</a>\
+// 					  				</div>\
+// 					  				\
+// 					  				<div class="visible-xs col-xs-6">\
+// 					  					<a href="http://www.foodfire.in/search" style="font-size:13px" class="btn btn-primary cart-checkout">\
+// 					  						More Hungry\
+// 					  					</a>\
+// 					  				</div>\
+// 					  				<div class="visible-xs col-xs-6">\
+// 					  					<a onclick="finalOrder()" style="font-size:13px" class="btn btn-success cart-checkout">\
+// 					  						Place Order\
+// 					  					</a>\
+// 					  				</div>\
+// 				  				</div>\
+// 				  			</div>');
+// 	 				}else{
+// 	 					$('.cart-vendor').append('<div class="cart-seller">\
+// 				  				<div class="row">\
+// 				  					<a href="http://www.foodfire.in/checkout" class="btn btn-success cart-checkout">\
+// 				  						Checkout\
+// 				  					</a>\
+// 				  				</div>\
+// 				  			</div>');
+// 	 				}
+// 	 				$('#productModal').modal('hide');
+// 	 				$('.product-total').html(response['qty']);
+// 	 				$('.product-total-price').html('<i class="fa fa-inr"></i>'+ response['total']);
+// 	 				if(response['total']){
+// 	 					$('.cart-dropdown').addClass('dropdown-menu');
+// 	 				}else{
+// 	 					$('.cart-dropdown').removeClass('dropdown-menu');
+// 	 				}
+// 	 				if($(window).height() > 590){
+// 	 					if(url.indexOf("www.foodfire.in/vendor/")+1){
+// 	 						// alert(url);
+// 	 						$("#wrap-sticky").sticky({topSpacing:-10,bottomSpacing:120, getWidthFrom: '#product-cart' });	
+// 	 					}
 	 					
-			 		}
-	 			// }
+// 			 		}
+// 	 			// }
 
-	 			if(!('ontouchstart' in window))
-				{
-				  $('[data-toggle="tooltip"]').tooltip();
-				}
-	 			dispalyCart.abort();
-	 		},
-	 		error: function(jqXHR, textStatus, errorThrown) {
-		        if(textStatus=="timeout") {
-		           $.ajax(this);
-		        } 
-		    }
-	});
-}
+// 	 			if(!('ontouchstart' in window))
+// 				{
+// 				  $('[data-toggle="tooltip"]').tooltip();
+// 				}
+// 	 			dispalyCart.abort();
+// 	 		},
+// 	 		error: function(jqXHR, textStatus, errorThrown) {
+// 		        if(textStatus=="timeout") {
+// 		           $.ajax(this);
+// 		        } 
+// 		    }
+// 	});
+// }
 
 
 //ADD PRODUCTS INTO CART (Not using) (Moved to angular)

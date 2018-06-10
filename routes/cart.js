@@ -2,7 +2,6 @@
 let _ = require('lodash');
 let moment = require('moment');
 moment().tz("America/Los_Angeles").format();
-let validator = require('validator');
 //HELPERS
 let alert = require('../helper/alert');
 let logger = require('../middleware/winston').logger;
@@ -45,13 +44,13 @@ exports.addCart = function (req, res) {
                 }).then(result => {
                     return showSession(req);
                 }).then(() => {
-                    res.send(JSON.stringify("success"));
+                    res.send("success");
                 }).catch(() => {
-                    res.send(JSON.stringify("error"));
+                    res.send("error");
                 });
         });
     } else {
-        res.send(JSON.stringify("error"));
+        res.send("error");
     }
 };
 
@@ -89,7 +88,7 @@ exports.getCart = function (req, res) {
             }
         }).catch(ex => {
             logger.error(ex);
-            res.send(JSON.stringify("error"));
+            res.send("error");
         });
 };
 
@@ -105,7 +104,7 @@ exports.deleteCartItem = function (req, res) {
         if (req.session.userAuthenticated) {
             // Delete it from a DB
             DB.Cart.destroy({where: {cartid : cartid}}).then(deleted => {
-                res.send(JSON.stringify("success"));
+                res.send("success");
             });
         } else {
             // Delete it from a session cart
@@ -119,10 +118,10 @@ exports.deleteCartItem = function (req, res) {
                 });
             }
             req.session.cart = newSessionCart;
-            res.send(JSON.stringify("success"));
+            res.send("success");
         }
     } else {
-        res.send(JSON.stringify("error"));
+        res.send("error");
     }
 }
 
@@ -140,7 +139,7 @@ exports.updateCartItem = function (req, res){
         if (req.session.userAuthenticated) {
             // Update it from a DB
             DB.Cart.update({qty: qty},{where: {cartid : cartid}}).then(deleted => {
-                res.send(JSON.stringify("success"));
+                res.send("success");
             });
         } else {
             // Update it from a session cart
@@ -155,10 +154,10 @@ exports.updateCartItem = function (req, res){
                 });
             }
             req.session.cart = newSessionCart;
-            res.send(JSON.stringify("success"));
+            res.send("success");
         }
     } else {
-        res.send(JSON.stringify("error"));
+        res.send("error");
     }
 }
 

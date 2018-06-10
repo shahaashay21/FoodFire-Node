@@ -67,6 +67,7 @@ app.factory('cartService', function($http, $rootScope, commonService){
         // console.log(total_qty);
     };
     function displayCart(){
+        $rootScope.cart = "";
         showCartLoader();
         $http({
             method: 'POST',
@@ -98,8 +99,8 @@ app.factory('cartService', function($http, $rootScope, commonService){
             } else {
                 $rootScope.cart = "";
                 $rootScope.extraInfo = "";
-                if(url.indexOf("www.foodfire.in/checkout")+1){
-                    window.location="http://www.foodfire.in";
+                if(url.indexOf("/checkout")+1){
+                    window.location="/";
                 }
             }
             if(typeof $rootScope.extraInfo === 'object' && $rootScope.extraInfo.total && $rootScope.extraInfo.total != null){
@@ -146,18 +147,11 @@ app.factory('cartService', function($http, $rootScope, commonService){
     function updateProduct(cartid, qty){
         var error = false;
         if(qty == undefined || qty == "" || qty == null) {
-            // _.forEach($rootScope.cart, function(items, vendorId){
-            //     _.forEach(items, function(itemDetails, itemid){
-            //         if($rootScope.cart[vendorId][itemid].cartid == cartid)
-            //             $rootScope.itemQty[intemIndex] = $rootScope.cart[vendorId][itemid].qty;
-            //     });
-            // });
             error = true;
         }
         _.forEach($rootScope.cart, function(items, vendorId){
             _.forEach(items, function(itemDetails, itemid){
                 if($rootScope.cart[vendorId][itemid].cartid == cartid && $rootScope.cart[vendorId][itemid].qty == qty ) {
-                    console.log("SAME");
                     error = true;
                 }
             });
@@ -202,7 +196,7 @@ app.factory('signService', function($http, $rootScope, cartService, commonServic
         }).then(function success(response){
             console.log(response);
             var url = $(location).attr('href');
-            if(url.indexOf("www.foodfire.in/user")+1){
+            if(url.indexOf("/user")+1){
                 // location.reload();
                 window.location=url;
             }
@@ -212,15 +206,20 @@ app.factory('signService', function($http, $rootScope, cartService, commonServic
                 $(".ajax-logged-in").hide();
                 $(".ajax-logged-out").show();
                 cartService.displayCart();
+                $rootScope.userAuthenticated = false;
             }
 		}, function (error){
             // Some error
         });
     };
-    function login(){
+    function login(page){
         // event.preventDefault();
-
-		var data = $('.loginForm').serializeArray();
+        var data = "";
+        if(page == 'checkout'){
+            data = $('.loginForm1').serializeArray();
+        } else {
+            data = $('.loginForm').serializeArray();
+        }
         data.push({name: '_csrf', value: _csrf});
         data = commonService.objectifyForm(data);
 
@@ -239,13 +238,11 @@ app.factory('signService', function($http, $rootScope, cartService, commonServic
             if(response == "not verify"){
                 $(".login-modal").modal('hide');
                 alertline('alert-notify-warning','You have not verified your Email. <b>Please verify</b>');
-            }
-            else if(response == "fail"){
+            } else if(response == "fail"){
                 $(".wrong-cred").show();
-            }
-            else{
+            } else{
                 var url = $(location).attr('href');
-                if(url.indexOf("www.foodfire.in/checkout")+1){
+                if(url.indexOf("/checkout")+1){
                     // location.reload();
                     window.location=url;
                 }
@@ -257,6 +254,7 @@ app.factory('signService', function($http, $rootScope, cartService, commonServic
                 $(".mob-user-name").html("<i class='fa fa-user fa-fw'></i>");
                 $(".user-name").html(toTitleCase(response.username)+' <i class="fa fa-caret-down"></i>');
                 cartService.displayCart();
+                $rootScope.userAuthenticated = true;
             }
 		});
     }
@@ -264,8 +262,9 @@ app.factory('signService', function($http, $rootScope, cartService, commonServic
         logout: function(){
             logout();
         },
-        login: function(){
-            login();
+        login: function(page){
+            var page = page || null;
+            login(page);
         }
     }
 })

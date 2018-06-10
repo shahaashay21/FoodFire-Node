@@ -177,6 +177,11 @@ app.post('/getcities', address.getcities);
 //Get areas
 app.post('/getareas', address.getareas);
 
+//Add address
+app.post('/address/add', address.addAddress);
+
+//Get address
+app.post('/address/get', address.getAddress);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
