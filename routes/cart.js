@@ -3,7 +3,7 @@ let _ = require('lodash');
 let moment = require('moment');
 moment().tz("America/Los_Angeles").format();
 //HELPERS
-let alert = require('../helper/alert');
+let response = require('../helper/response');
 let logger = require('../middleware/winston').logger;
 let common = require('../helper/common');
 

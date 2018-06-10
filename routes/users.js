@@ -3,7 +3,7 @@ let validator = require('validator');
 let bcrypt = require('bcrypt');
 
 //HELPERS
-let alert = require('../helper/alert');
+let response = require('../helper/response');
 let logger = require('../middleware/winston').logger;
 let common = require('../helper/common');
 
@@ -21,39 +21,44 @@ exports.register = function (req, res, next) {
     let error = false;
     if (common.isEmpty(email) || !validator.isEmail(email)) {
       sendData = {
-        "type": "danger",
-        "message": "Please check your email id."
+        "alertType": "danger",
+        "alertMessage": "Please check your email id."
       };
       error = true;
     } else if (common.isEmpty(name)) {
       sendData = {
-        "type": "danger",
-        "message": "Name field should not be empty."
+        "alertType": "danger",
+        "alertMessage": "Name field should not be empty."
       };
       error = true;
     } else if (common.isEmpty(contact) || contact.length < 6 || isNaN(contact)) {
       sendData = {
-        "type": "danger",
-        "message": "Mobile must be more than 5 characters and numeric."
+        "alertType": "danger",
+        "alertMessage": "Mobile must be more than 5 characters and numeric."
       };
       error = true;
     } else if (common.isEmpty(password) || password.length < 6) {
       sendData = {
-        "type": "danger",
-        "message": "Password must be more than 5 characters."
+        "alertType": "danger",
+        "alertMessage": "Password must be more than 5 characters."
       };
       error = true;
     }
     if (error) {
       //Create alert and send back
-      alert.alertResponse(sendData, function (errorData) {
+      response.error(sendData, returnData => {
+        res.send(returnData);
+      });
+      response.alertResponse(sendData, function (errorData) {
         res.send(JSON.stringify(errorData));
       });
     } else {
       DB.Cus.count({ where: { 'email': email } }).then(isAvailable => { // Email is available or not
         if (isAvailable) {
           //EMAIL ADDRESS IS ALREADY AVAILABLE
-          res.end('ER');
+          response.create({modal: 1, message: 'ER'}, returnData => {
+            res.send(returnData);
+          });
         } else {
           bcrypt.hash(password, 5, function (err, hash) {
             DB.sequelize.query("select get_nextid('cus') as id;").then(nextId => {
@@ -65,25 +70,35 @@ exports.register = function (req, res, next) {
               userAccount.contact = contact;
               //REGISTER USER ACCOUNT
               userAccount.save().then(() => {
-                res.end('Registered');
+                response.create({message: 'Registered'}, returnData => {
+                  res.send(returnData);
+                });
               }).catch(ex => {
                 logger.error("Error in saving new user's details: " + ex);
-                res.end('err');
+                response.error({message: 'err'}, returnData => {
+                  res.send(returnData);
+                });
               });
             }).catch(ex => {
               logger.error("Error in getting new cus id: " + ex);
-              res.end('err');
+              response.error({message: 'err'}, returnData => {
+                res.send(returnData);
+              });
             });
           });
         }
       }).catch((ex) => {
         logger.error("Error in registering users: " + ex);
-        res.end('err');
+        response.error({message: 'err'}, returnData => {
+          res.send(returnData);
+        });
       });
     }
   } catch (ex) {
     logger.error("Something went wrong to register new user: " + ex);
-    res.end('err');
+    response.error({message: 'err'}, returnData => {
+      res.send(returnData);
+    });
   }
 };
 
@@ -99,21 +114,29 @@ exports.login = function (req, res) {
   }).then(user => {
     if (user) {
       bcrypt.compare(password, user.password).then(isValid => {
-        logger.info("Whether password is valid or not: " + isValid);
         if (isValid) {
           user = { 'username': user.username, 'cusunkid': user.cusunkid };
           req.session.user = user;
           req.session.userAuthenticated = true;
-          res.end(JSON.stringify(user));
+          // res.send(JSON.stringify(user));
+          response.create({message: user}, returnData => {
+            res.send(returnData);
+          })
         } else {
-          res.end('fail');
+          response.error({message: 'fail'}, returnData => {
+            res.send(returnData);
+          });
         }
       }).catch(ex => {
         logger.error("Error in bcrypt compare with user login: " + ex);
-        res.end('fail');
+        response.error({message: 'fail'}, returnData => {
+          res.send(returnData);
+        });
       });
     } else {
-      res.end('fail');
+      response.error({message: 'fail'}, returnData => {
+        res.send(returnData);
+      });
     }
   });
 };
@@ -123,5 +146,8 @@ exports.logout = function (req, res) {
   logger.info("Users page ::: Function: logout");
   req.session.userAuthenticated = false;
   req.session.user = null;
-  res.json("Logged out");
+  // res.json("Logged out");
+  response.create({message: 'Logged out'}, returnData => {
+    res.send(returnData);
+  });
 }

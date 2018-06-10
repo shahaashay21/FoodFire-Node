@@ -19,44 +19,47 @@ $(document).ready(function(){
 				$('.regAjaxLoading').show();
 			},
 			success:function(response){
-				//consoleClear();
-				// console.log(response);
+				console.log(response);
 				$('.regAjaxLoading').hide();
-				
-				if(response.message){
-	              alertline(response.alerttype,response.message);
-	            }
-				else if(response == 'Registered')
-				{
-					$('.emailregistered').css('visibility','hidden');
-					$('.register-modal').modal('hide');
-					alertline('alert-notify-success','<b>Successfully Registered.</b> Activation link has been sent to your Email Id.');
-				}else if(response == 'Network Problem')
-				{
-					$('.emailregistered').css('visibility','hidden');
-					$('.register-modal').modal('hide');
-					alertline('.alert-notify-info','<b>Network Problem.</b> Please try again.');
+				if(response.alert){
+					if(response.alertType && response.alertMessage)
+					alertline(response.alertType, response.alertMessage);
 				}
-				if(response == 'ER'){
-					$('.emailregistered').css('visibility','visible');
-					$("#email").removeClass('inputsuc');
-					$("#email").addClass('inputerr');
-					$(".email-glyphicon").removeClass('glyphicon-ok');
-					$(".email-glyphicon").addClass('glyphicon-remove');
-					$(".email-glyphicon").css('color','#a94442');
-					$(".email-glyphicon").show();
-				}else{
-					$('.emailregistered').css('visibility','hidden');
-					$("#email").removeClass('inputerr');
-					$("#email").addClass('inputsuc');
-					$(".email-glyphicon").removeClass('glyphicon-remove');
-					$(".email-glyphicon").addClass('glyphicon-ok');
-					$(".email-glyphicon").css('color','#3c763d');
-					$(".email-glyphicon").show();
+				if(!response.modal){
+					// Close modal
+					$('.register-modal').modal('hide');
 				}
+	
+				if(response.error){
+					if(response.message == "Network Problem"){
+						$('.emailregistered').css('visibility','hidden');
+						$('.register-modal').modal('hide');
+						alertline('.alert-notify-info','<b>Network Problem.</b> Please try again.');
+					}
+				} else {
+					if(response.message == "Registered"){
+						$('.emailregistered').css('visibility','hidden');
+						alertline('alert-notify-success','<b>Successfully Registered.</b> Activation link has been sent to your Email Id.');
+					}
 
-				
-
+					if(response.message == 'ER'){
+						$('.emailregistered').css('visibility','visible');
+						$("#email").removeClass('inputsuc');
+						$("#email").addClass('inputerr');
+						$(".email-glyphicon").removeClass('glyphicon-ok');
+						$(".email-glyphicon").addClass('glyphicon-remove');
+						$(".email-glyphicon").css('color','#a94442');
+						$(".email-glyphicon").show();
+					}else{
+						$('.emailregistered').css('visibility','hidden');
+						$("#email").removeClass('inputerr');
+						$("#email").addClass('inputsuc');
+						$(".email-glyphicon").removeClass('glyphicon-remove');
+						$(".email-glyphicon").addClass('glyphicon-ok');
+						$(".email-glyphicon").css('color','#3c763d');
+						$(".email-glyphicon").show();
+					}
+				}
 			}
 		});
 	});

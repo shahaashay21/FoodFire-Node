@@ -1,7 +1,7 @@
 //LIBRARY
 let _ = require('lodash');
 //HELPERS
-let alert = require('../helper/alert');
+let response = require('../helper/response');
 let logger = require('../middleware/winston').logger;
 let common = require('../helper/common');
 
@@ -75,7 +75,7 @@ exports.addAddress = function(req, res){
         }
         if (error) {
         //Create alert and send back
-        alert.alertResponse(sendData, function (errorData) {
+        response.alertResponse(sendData, function (errorData) {
             res.send(JSON.stringify(errorData));
         });
         } else {
@@ -91,10 +91,10 @@ exports.addAddress = function(req, res){
                 userAddress.pincode = pincode;
 
                 userAddress.save().then(() => {
-                    res.end('Added');
+                    res.send('Added');
                 }).catch(ex => {
                     logger.error("Error in saving user's address: " + ex);
-                    res.end('err');
+                    res.send('err');
                 });
             });
 

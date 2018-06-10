@@ -194,13 +194,8 @@ app.factory('signService', function($http, $rootScope, cartService, commonServic
             data: {_csrf},
             timeout: 4000
         }).then(function success(response){
-            console.log(response);
-            var url = $(location).attr('href');
-            if(url.indexOf("/user")+1){
-                // location.reload();
-                window.location=url;
-            }
-            if(response.data == "Logged out"){
+            response = response.data;
+            if(!response.error && response.message == "Logged out"){
                 $(".php-log-out").hide();
                 $(".php-log-in").hide();
                 $(".ajax-logged-in").hide();
@@ -235,27 +230,33 @@ app.factory('signService', function($http, $rootScope, cartService, commonServic
         }).then(function success(response){
             response = response.data;
             $('.regAjaxLoading').hide();
-            if(response == "not verify"){
+
+            if(response.alert){
+                if(response.alertType && response.alertMessage)
+                alertline(response.alertType, response.alertMessage);
+            }
+            if(!response.modal){
+                // Close modal
                 $(".login-modal").modal('hide');
-                alertline('alert-notify-warning','You have not verified your Email. <b>Please verify</b>');
-            } else if(response == "fail"){
-                $(".wrong-cred").show();
-            } else{
-                var url = $(location).attr('href');
-                if(url.indexOf("/checkout")+1){
-                    // location.reload();
-                    window.location=url;
+            }
+
+            if(response.error){
+                if(response.message == "fail"){
+                    $(".wrong-cred").show();
                 }
+            } else {
                 $(".login-modal").modal('hide');
                 $(".php-log-out").hide();
                 $(".php-log-in").hide();
                 $(".ajax-logged-in").show();
                 $(".ajax-logged-out").hide();
                 $(".mob-user-name").html("<i class='fa fa-user fa-fw'></i>");
-                $(".user-name").html(toTitleCase(response.username)+' <i class="fa fa-caret-down"></i>');
+                $(".user-name").html(toTitleCase(response.message.username)+' <i class="fa fa-caret-down"></i>');
                 cartService.displayCart();
                 $rootScope.userAuthenticated = true;
             }
+
+            // alertline('alert-notify-warning','You have not verified your Email. <b>Please verify</b>');
 		});
     }
     return{

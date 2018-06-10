@@ -1,7 +1,7 @@
 //LIBRARY
 let _ = require('lodash');
 //HELPERS
-let alert = require('../helper/alert');
+let response = require('../helper/response');
 let logger = require('../middleware/winston').logger;
 
 //DB
