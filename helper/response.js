@@ -4,8 +4,9 @@ exports.alertResponse = function(req, callback){
 	var data = {};
 	data['modal'] = 1;
 	data['alert'] = 1;
-	data['alerttype'] = "alert-notify-"+ req.type;
-    data['message'] = "<b>"+req.message+"</b>";
+	data['error'] = 1;
+	data['alertType'] = "alert-notify-"+ req.type;
+    data['alertMessage'] = "<b>"+req.message+"</b>";
 	callback(JSON.stringify(data));
 }
 

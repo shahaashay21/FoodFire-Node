@@ -21,36 +21,29 @@ exports.register = function (req, res, next) {
     let error = false;
     if (common.isEmpty(email) || !validator.isEmail(email)) {
       sendData = {
-        "alertType": "danger",
-        "alertMessage": "Please check your email id."
+        "email": "Please check your email id."
       };
       error = true;
     } else if (common.isEmpty(name)) {
       sendData = {
-        "alertType": "danger",
-        "alertMessage": "Name field should not be empty."
+        "name": "Name field should not be empty."
       };
       error = true;
     } else if (common.isEmpty(contact) || contact.length < 6 || isNaN(contact)) {
       sendData = {
-        "alertType": "danger",
-        "alertMessage": "Mobile must be more than 5 characters and numeric."
+        "mobile": "Mobile must be more than 5 characters and numeric."
       };
       error = true;
     } else if (common.isEmpty(password) || password.length < 6) {
       sendData = {
-        "alertType": "danger",
-        "alertMessage": "Password must be more than 5 characters."
+        "password": "Password must be more than 5 characters."
       };
       error = true;
     }
     if (error) {
       //Create alert and send back
-      response.error(sendData, returnData => {
+      response.error({message: sendData}, returnData => {
         res.send(returnData);
-      });
-      response.alertResponse(sendData, function (errorData) {
-        res.send(JSON.stringify(errorData));
       });
     } else {
       DB.Cus.count({ where: { 'email': email } }).then(isAvailable => { // Email is available or not

@@ -28,6 +28,15 @@ module.exports = function(sequelize, DataTypes) {
 			type: DataTypes.STRING(45),
 			allowNull: true
 		},
+		discount: {
+			type: DataTypes.INTEGER(11),
+			allowNull: false,
+			defaultValue: '0'
+		},
+		promoid: {
+			type: DataTypes.INTEGER(11),
+			allowNull: true
+		},
 		paymentunkid: {
 			type: DataTypes.INTEGER(11),
 			allowNull: false,

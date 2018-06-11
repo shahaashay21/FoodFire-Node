@@ -84,6 +84,10 @@ app.controller("search", function($scope, $http, $location, $rootScope, signServ
 				misc.backcolor = '#e74c3c';
 				misc.border = '#c0392b';
 			}
+
+			if(data.ratings == null){
+				misc = {};
+			}
 			
 			// Ratings symbol
 			var ratingsSymbol = "";

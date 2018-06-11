@@ -67,22 +67,26 @@ app.controller("checkout", function($scope, $rootScope, $http, $location, $windo
             dataType: 'jsonp',
             timeout: 4000
         }).then(function success(response){
-            if(response["alert"]){
-                location.assign(window.location.pathname);
-                // alertline(response["alerttype"],"<b>"+response["message"]+"</b>");
-            }else{
-                if(response["modal"] == 0){
-                    $("#newaddress").modal("hide");
-                }
-                $("#newaddress").modal("handleUpdate");
-                $(".input_text_box").removeClass("inputerr");
-                $(".ff-text-danger").remove();
-                $.each(response["message"], function(i,item){
+            response = response.data;
+
+            $(".input_text_box").removeClass("inputerr");
+            $(".ff-text-danger").remove();
+            if(response.alert){
+                if(response.alertType && response.alertMessage)
+                alertline(response.alertType, response.alertMessage);
+            }
+            if(!response.modal){
+                // Close modal
+                $("#newaddress").modal("hide");
+            }
+
+            if(response.error){
+                $.each(response.message, function(i,message){
                     $("#"+i).addClass("inputerr");
-                    $("#"+i).after("<div class=\'col-xs-12 ff-text-danger\'>"+item+"</div>");
+                    $("#"+i).after("<div class=\'col-xs-12 ff-text-danger\'>"+message+"</div>");
                 });
-                if(response.data = "Added"){
-                    $("#newaddress").modal("hide");
+            } else {
+                if(response.message = "Added"){
                     alertline('alert-notify-success','<b>Address Added Successfully.</b>');
                     $scope.addressService.getAddress();
                 }
@@ -93,34 +97,4 @@ app.controller("checkout", function($scope, $rootScope, $http, $location, $windo
             }
         });
     }
-
-    // $scope.getAddress = function () {
-    //     $http({
-    //         method: 'POST',
-    //         url: "/address/get",
-    //         data: {'_csrf':_csrf},
-    //         dataType: 'jsonp',
-    //         timeout: 4000
-    //     }).then(function success(response){
-    //         $scope.addresses = null;
-    //         $scope.isAddressAvailable = true;
-    //         if(response.data == "No address found"){
-    //             $scope.isAddressAvailable = false;
-    //         } else if(response.data == "Please sign in to get an address"){
-
-    //         } else {
-    //             $scope.isDefaultAddress = false;
-    //             $.each(response.data, function(i,address){
-    //                 if(address.defaultadd == 1){
-    //                     $scope.isDefaultAddress = true;
-    //                 }
-    //             });
-    //             $scope.addresses = response.data;
-    //         }
-    //     }, function error(error){
-    //         if(error.statusText=="timeout") {
-    //             $scope.getAddress();
-    //         }
-    //     });
-    // }
 });

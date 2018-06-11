@@ -35,6 +35,11 @@ $(document).ready(function(){
 						$('.emailregistered').css('visibility','hidden');
 						$('.register-modal').modal('hide');
 						alertline('.alert-notify-info','<b>Network Problem.</b> Please try again.');
+					} else {
+						$.each(response.message, function(i,message){
+							$("#"+i).addClass("inputerr");
+							$("#"+i).after("<div class=\'col-xs-12 ff-text-danger\'>"+message+"</div>");
+						});
 					}
 				} else {
 					if(response.message == "Registered"){

@@ -62,6 +62,7 @@ app.factory('cartService', function($http, $rootScope, commonService){
             extraInfo.grand_total = parseInt(total + extraInfo.delivery_charge);
         }
         $rootScope.extraInfo = extraInfo;
+        updateWithPromo();
         // console.log(total);
         // console.log(total_without_tax);
         // console.log(total_qty);
@@ -69,18 +70,22 @@ app.factory('cartService', function($http, $rootScope, commonService){
     function displayCart(){
         $rootScope.cart = "";
         showCartLoader();
+        var data = {_csrf};
+        if($rootScope.applied_promo && $rootScope.applied_promo != ""){
+            data.promo_code = $rootScope.applied_promo;
+        }
         $http({
             method: 'POST',
             url: '/cart/get',
-            data: {_csrf},
+            data: data,
             dataType: 'json',
             timeout: 4000
-        }).then(function success(data){
-            // console.log(data);
+        }).then(function success(response){
+            // console.log(response);
             hideCartLoader();
             var url = $(location).attr('href');
-            if(data.data && data.data != null && data.data != "") {
-                $rootScope.cart = data.data;
+            if(response.data && response.data != null && response.data != "") {
+                $rootScope.cart = response.data;
                 $rootScope.cart = _.groupBy($rootScope.cart, 'vendorunkid');
                 // console.log($rootScope.cart);
                 let delivery_time = 0;
@@ -172,6 +177,71 @@ app.factory('cartService', function($http, $rootScope, commonService){
             });
         }
     };
+
+    function applyPromo(){
+        var promo_code = $("#promo_code").val();
+        $rootScope.applied_promo = null;
+        $rootScope.discount_type = null;
+        $rootScope.discount = null;
+        // if(promo_code == ""){
+        //     promo_code = getCookie("firepromo");
+        // }
+        $http({
+            method: 'POST',
+            url: "/promo",
+            data: {'_csrf':_csrf, promo_code: promo_code},
+            dataType: 'jsonp',
+            timeout: 50000
+        }).then(function success(response){
+            response = response.data;
+            setCookie("firepromo", promo_code, 1);
+            //Default
+            $(".input_text_box").removeClass("inputerr");
+            $(".ff-text-danger").remove();
+            $(".applied_coupon").remove();
+
+            if(response.alert){
+                if(response.alertType && response.alertMessage)
+                alertline(response.alertType, response.alertMessage);
+            }
+        
+            if(response.error){
+                // IF any other message
+        
+                // IF form
+                $.each(response.message, function(i,message){
+                    $("#"+i).addClass("inputerr");
+                    $("#"+i).after("<div class=\'col-xs-12 ff-text-danger\'>"+message+"</div>");
+                });
+            } else {
+                // IF SUCCESS
+                $("#promo_code").after("<div class=\'col-xs-12 applied_coupon text-success\'>Coupon applied!</div>");
+                $rootScope.applied_promo = promo_code;
+                if(response.message){
+                    $rootScope.discount_type = response.message.discount_type;
+                    $rootScope.discount = response.message.discount;
+                    updateWithPromo();
+                }
+            }
+        }, function error(error){
+            if(error.statusText=="timeout") {
+                $scope.addNewAddress();
+            }
+        });
+    }
+    function updateWithPromo(){
+        $rootScope.updatedPromo = false;
+        if($rootScope.extraInfo && $rootScope.extraInfo.grand_total && $rootScope.discount_type && $rootScope.discount){
+            $rootScope.extraInfo.original_amount = $rootScope.extraInfo.grand_total
+            if($rootScope.discount_type == 1){
+                $rootScope.extraInfo.discounted_amount = parseInt($rootScope.extraInfo.original_amount - $rootScope.discount);
+                $rootScope.updatedPromo = true;
+            } else if($rootScope.discount_type == 2 && $rootScope.discount <= 100){
+                $rootScope.extraInfo.discounted_amount = parseInt($rootScope.extraInfo.original_amount - (($rootScope.extraInfo.original_amount * $rootScope.discount) / 100));
+                $rootScope.updatedPromo = true;
+            }
+        }
+    }
     return{
         displayCart: function(){
             displayCart()
@@ -181,6 +251,9 @@ app.factory('cartService', function($http, $rootScope, commonService){
         },
         updateProduct: function (cartid, qty){
             updateProduct(cartid, qty);
+        },
+        applyPromo: function (){
+            applyPromo();
         }
     };
 });

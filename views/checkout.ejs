@@ -28,9 +28,11 @@
 
 <div class="container-fluid ff-head">
 	<div class="col-lg-2"></div>
-	<div class="col-lg-8">
+	<div class="col-lg-2">
 		<i class="fa fa-shopping-cart"></i> Checkout
-	</div>
+    </div>
+    <div class="col-lg-1"></div>
+    <div class="col-lg-4">{{promo_message}}</div>
 	<div class="col-lg-2"></div>
 </div>
 
@@ -152,6 +154,26 @@
                             </div>	
                         </div>
                         
+                    </div>
+                </div>
+            </div>
+
+            <!-- Promo code -->
+            <div class="row">
+                <div class="col-xs-12 no-padding panel panel-foodfire">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <i class="fa fa-trophy"></i>
+                            Promo Code
+                        </div>
+                    </div>
+                    <div class="panel-body" style="padding:15px 0px">
+                        <div class="col-xs-12">
+                            <input type="text" id="promo_code" placeholder="Enter promo code" name="promo" class="input_text_box">
+                        </div>	
+                    </div>
+                    <div class="panel-footer">
+                        <a class="btn btn-danger" data-toggle="tooltip" data-placement="top" data-title="Apply" data-ng-click="cartService.applyPromo();" >Apply</a>
                     </div>
                 </div>
             </div>

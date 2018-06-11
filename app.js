@@ -183,6 +183,9 @@ app.post('/address/add', address.addAddress);
 //Get address
 app.post('/address/get', address.getAddress);
 
+//Apply promo code
+app.post('/promo', cart.applyPromo);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

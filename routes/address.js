@@ -43,41 +43,36 @@ exports.addAddress = function(req, res){
     if (req.session.userAuthenticated) {
         let error = false;
         if (common.isEmpty(name)) {
-        sendData = {
-            "type": "danger",
-            "message": "Name field should not be empty."
-        };
-        error = true;
+            sendData = {
+                "add_name": "Name field should not be empty."
+            };
+            error = true;
         } else if (common.isEmpty(address)) {
-        sendData = {
-            "type": "danger",
-            "message": "Address field should not be empty."
-        };
-        error = true;
+            sendData = {
+                "add_address": "Address field should not be empty."
+            };
+            error = true;
         } else if (common.isEmpty(cityid) || isNaN(cityid)) {
-        sendData = {
-            "type": "danger",
-            "message": "Please select your city."
-        };
-        error = true;
+            sendData = {
+                "add_city": "Please select your city."
+            };
+            error = true;
         } else if (common.isEmpty(areaid) || isNaN(areaid)) {
-        sendData = {
-            "type": "danger",
-            "message": "Please select your area."
-        };
-        error = true;
+            sendData = {
+                "add_area": "Please select your area."
+            };
+            error = true;
         } else if (common.isEmpty(pincode) || isNaN(pincode)) {
             sendData = {
-            "type": "danger",
-            "message": "Pincode field should not be empty and must be numeric."
+                "add_pincode": "Pincode field should not be empty and must be numeric."
             };
             error = true;
         }
         if (error) {
-        //Create alert and send back
-        response.alertResponse(sendData, function (errorData) {
-            res.send(JSON.stringify(errorData));
-        });
+            //Create alert and send back
+            response.error({message: sendData}, function (returnData) {
+                res.send(returnData);
+            });
         } else {
             // Add address into the DB
             DB.sequelize.query("select get_nextid('cus_address') as id;").then(nextId => {

@@ -92,6 +92,46 @@ exports.getCart = function (req, res) {
         });
 };
 
+exports.applyPromo = function (req, res) {
+    logger.info("Cart ::: applyPromo");
+
+    let promoCode = req.body.promo_code;
+
+    if(promoCode && promoCode != ''){
+        DB.Promo.findOne({where: {code: promoCode}}).then(promoDetails => {
+            // promoDetails = promoDetails.dataValues
+            // logger.info(promoDetails.dataValues);
+            if(promoDetails){
+                let message = {
+                    discount_type: promoDetails.discount_type,
+                    discount: promoDetails.discount
+                }
+                let returnMessage = {
+                    alert: 1,
+                    alertType: 'success',
+                    alertMessage: promoDetails.message,
+                    message
+                }
+                response.create(returnMessage, returnData => {
+                    res.send(returnData);
+                })
+            } else {
+                let message = "Coupon code '"+promoCode+"' is not valid";
+                let sendMessage = {
+                    promo_code: message
+                }
+                response.error({message: sendMessage}, returnData => {
+                    res.send(returnData);
+                });
+            }
+        });
+    } else {
+        response.error({}, returnData => {
+            res.send(returnData);
+        })
+    }
+}
+
 /*** Deleting cart item ***/
 exports.deleteCartItem = function (req, res) {
     logger.info("Cart ::: deleteCartItem");

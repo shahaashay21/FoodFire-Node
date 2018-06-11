@@ -24,7 +24,7 @@
                 </div>
         </div>
         <div class="cart-vendor" style="font-size: 14px">
-            <div class="cart-vendor-details" data-ng-style="styleCartVendoretails" style="max-height:250px; overflow-y:auto">
+            <div class="cart-vendor-details" data-ng-style="styleCartVendoretails" style="max-height:350px; overflow-y:auto">
                 <div class="cart-seller" data-ng-repeat="vendor in cart">
                     <!-- {{cart}} -->
                     <a style="text-decoration:none" href="{{vendor[0].vendor_fullurl}}">
@@ -125,7 +125,11 @@
                                 <div class="col-xs-6">
                                     Grand Total:
                                 </div>
-                                <div class="col-xs-6">
+                                <div data-ng-if="updatedPromo === true" class="col-xs-6">
+                                    <span style="text-decoration: line-through;" class="text-muted">{{extraInfo.grand_total}}.00</span>
+                                    <span>{{extraInfo.discounted_amount}}.00</span>
+                                </div>
+                                <div data-ng-if="updatedPromo !== true" class="col-xs-6">
                                     <!-- {{((extraInfo.total) + (25*extraInfo.restaurants)).toFixed(2)}} -->
                                     {{extraInfo.grand_total}}.00
                                 </div>
