@@ -1,7 +1,7 @@
 /* jshint indent: 1 */
 
 module.exports = function(sequelize, DataTypes) {
-	return sequelize.define('map', {
+	return sequelize.define('enums', {
 		code_id: {
 			type: DataTypes.INTEGER(11),
 			allowNull: false,
@@ -27,7 +27,7 @@ module.exports = function(sequelize, DataTypes) {
 			defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
 		}
 	}, {
-		tableName: 'map',
+		tableName: 'enums',
 		timestamps: false
 	});
 };

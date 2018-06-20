@@ -170,7 +170,7 @@
                         <span id='mobvendor-visit-<%= restaurant.vendorunkid %>'><%= restaurant.visits %></span>
                     </span>
                 </div>
-                <div style="float:right">
+                <!-- <div style="float:right">
                     <span style="font-weight:bold; margin:0px 10px 0px 20px;">Your Rating</span>
                     <div class="cusratemob" style="width:160px; display:table">
                         <i onclick="updatevalue(<%= restaurant.vendorunkid %>,'2','1')" class="fa fa-star fa-2x" style="cursor:pointer" data-toggle='tooltip' title='Bad' data-placement='top'></i>
@@ -179,7 +179,7 @@
                         <i onclick="updatevalue(<%= restaurant.vendorunkid %>,'2','4')" class="fa fa-star fa-2x" style="cursor:pointer" data-toggle='tooltip' title='Great' data-placement='top'></i>
                         <i onclick="updatevalue(<%= restaurant.vendorunkid %>,'2','5')" class="fa fa-star fa-2x" style="cursor:pointer" data-toggle='tooltip' title='Awesome' data-placement='top'></i>
                     </div>
-                </div>
+                </div> -->
             </div>
             <!-- MOBILE VERSION OVER -->
 
@@ -211,14 +211,14 @@
                      
                 } %>
                 <div class="btn btn-default" style="padding:0 0 0 10px; min-height:38px; border:none; margin-top:40px; display: table">
-                    <% if( restaurant.votes == 0){ %>
+                    <% if( restaurant.ratings == null){ %>
                         <span style="float:left; margin-right:5px; margin-top: 5px">
                             <span style="font-weight:bold; font-size:15px;">No Ratings Yet</span>
                         </span>
                     <% } else { %>
                         <span style="float:left; margin-right:5px">
                             <span style="font-weight:bold; font-size:15px"><%= rat %></span>
-                            <span style="font-size:9px; display:block"><%= restaurant.votes %> User Votes</span>
+                            <span style="font-size:9px; display:block"><%= restaurant.ratings %> User Votes</span>
                         </span>
                         <span class="btn btn-green" style="background:<%= backcolor %>;border-bottom:solid <%= border %>; font-size:19px; padding: 4px 7px"><%= restaurant.ratings %></span>
                     <% } %>

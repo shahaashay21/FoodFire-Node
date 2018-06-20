@@ -54,9 +54,16 @@ exports.addCart = function (req, res) {
     }
 };
 
-/*** Getting cart items ***/
 exports.getCart = function (req, res) {
     logger.info("Cart ::: getCart");
+    findCart(req, cartDetails => {
+        res.send(cartDetails);
+    })
+}
+
+/*** Getting cart items ***/
+const findCart = function (req, callback) {
+    logger.info("Cart ::: findCart");
 
     getCartDetails(req)
         .then(cart => {
@@ -80,19 +87,26 @@ exports.getCart = function (req, res) {
                             merged.extraItems = extraItemsInfo[i];
                             returnCart.push(merged);
                         }
-                        res.send(JSON.stringify(returnCart));
+                        callback(JSON.stringify(returnCart));
                     });
                 });
             } else {
-                res.send();
+                callback();
             }
         }).catch(ex => {
             logger.error(ex);
-            res.send("error");
+            callback("error");
         });
 };
 
-exports.applyPromo = function (req, res) {
+exports.applyPromo = function (req, res){
+    logger.info("Cart ::: findPromo");
+    findPromo(req, promoResult => {
+        res.send(promoResult);
+    });
+
+}
+const findPromo = function (req, callback) {
     logger.info("Cart ::: applyPromo");
 
     let promoCode = req.body.promo_code;
@@ -102,32 +116,44 @@ exports.applyPromo = function (req, res) {
             // promoDetails = promoDetails.dataValues
             // logger.info(promoDetails.dataValues);
             if(promoDetails){
-                let message = {
-                    discount_type: promoDetails.discount_type,
-                    discount: promoDetails.discount
-                }
-                let returnMessage = {
-                    alert: 1,
-                    alertType: 'success',
-                    alertMessage: promoDetails.message,
-                    message
-                }
-                response.create(returnMessage, returnData => {
-                    res.send(returnData);
-                })
+                DB.Order.findOne({where: {promo: promoDetails.code, cusunkid: req.session.user.cusunkid}}).then(promoOrder => {
+                    if(promoDetails.multiple == 0 && promoOrder !== null){
+                        let message = "Sorry! You have already used it.";
+                        let sendMessage = {
+                            promo_code: message
+                        }
+                        response.error({message: sendMessage}, returnData => {
+                            callback(returnData);
+                        });
+                    } else {
+                        let message = {
+                            discount_type: promoDetails.discount_type,
+                            discount: promoDetails.discount
+                        }
+                        let returnMessage = {
+                            alert: 1,
+                            alertType: 'success',
+                            alertMessage: promoDetails.message,
+                            message
+                        }
+                        response.create(returnMessage, returnData => {
+                            callback(returnData);
+                        })
+                    }
+                });
             } else {
                 let message = "Coupon code '"+promoCode+"' is not valid";
                 let sendMessage = {
                     promo_code: message
                 }
                 response.error({message: sendMessage}, returnData => {
-                    res.send(returnData);
+                    callback(returnData);
                 });
             }
         });
     } else {
         response.error({}, returnData => {
-            res.send(returnData);
+            callback(returnData);
         })
     }
 }
@@ -407,3 +433,7 @@ exports.logSession = function (req, res) {
             }
         });
 }
+
+
+exports.findCart = findCart;
+exports.findPromo = findPromo;

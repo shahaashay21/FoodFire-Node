@@ -28,13 +28,28 @@ module.exports = function(sequelize, DataTypes) {
 			type: DataTypes.STRING(45),
 			allowNull: true
 		},
-		discount: {
-			type: DataTypes.INTEGER(11),
+		grand_total: {
+			type: DataTypes.FLOAT,
 			allowNull: false,
 			defaultValue: '0'
 		},
-		promoid: {
-			type: DataTypes.INTEGER(11),
+		delivery_charge: {
+			type: DataTypes.FLOAT,
+			allowNull: false,
+			defaultValue: '0'
+		},
+		tax: {
+			type: DataTypes.FLOAT,
+			allowNull: false,
+			defaultValue: '0'
+		},
+		discount: {
+			type: DataTypes.FLOAT,
+			allowNull: false,
+			defaultValue: '0'
+		},
+		promo: {
+			type: DataTypes.STRING(45),
 			allowNull: true
 		},
 		paymentunkid: {
@@ -44,6 +59,11 @@ module.exports = function(sequelize, DataTypes) {
 				model: 'cf_payment',
 				key: 'paymentunkid'
 			}
+		},
+		status: {
+			type: DataTypes.INTEGER(11),
+			allowNull: true,
+			defaultValue: '11'
 		},
 		createdAt: {
 			type: DataTypes.DATE,

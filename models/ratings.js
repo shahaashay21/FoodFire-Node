@@ -1,7 +1,7 @@
 /* jshint indent: 1 */
 
 module.exports = function(sequelize, DataTypes) {
-	return sequelize.define('rate', {
+	return sequelize.define('ratings', {
 		cusunkid: {
 			type: DataTypes.INTEGER(11),
 			allowNull: false,
@@ -27,7 +27,7 @@ module.exports = function(sequelize, DataTypes) {
 			type: DataTypes.INTEGER(11),
 			allowNull: false,
 			references: {
-				model: 'map',
+				model: 'enums',
 				key: 'code_id'
 			}
 		},
@@ -42,7 +42,7 @@ module.exports = function(sequelize, DataTypes) {
 			defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
 		}
 	}, {
-		tableName: 'rate',
+		tableName: 'ratings',
 		timestamps: false
 	});
 };

@@ -42,6 +42,8 @@ var restaurant = require('./routes/restaurant');
 var cart = require('./routes/cart');
 var checkout = require('./routes/checkout');
 var address = require('./routes/address');
+var order = require('./routes/order');
+var track = require('./routes/manage/track');
 
 //Middleware files
 Mlog = require('./middleware/Mlog');
@@ -122,6 +124,8 @@ app.get('/vendor/:city/:vendor_url', restaurant.index);
 //CHECKOOUT PAGE
 app.get('/checkout', checkout.index);
 
+//Tracking page (After order placed)
+app.get('/track', track.index);
 
 
 
@@ -185,6 +189,12 @@ app.post('/address/get', address.getAddress);
 
 //Apply promo code
 app.post('/promo', cart.applyPromo);
+
+//Apply promo code
+app.post('/placeorder', order.placeOrder);
+
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

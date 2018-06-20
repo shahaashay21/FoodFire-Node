@@ -57,13 +57,14 @@
                         <div class="row" style="margin-bottom:10px" data-ng-if = "isAddressAvailable" data-ng-repeat="address in addresses track by $index">
                             <div class="col-xs-1">
                                 <div data-ng-if="isDefaultAddress">
-                                    <input data-ng-if="address.defaultadd == 1" type="radio" value="" name="address" checked>
-                                    <input data-ng-if="address.defaultadd != 1" type="radio" value="" name="address">
+                                    <input data-ng-if="address.defaultadd == 1" type="radio" value="{{address.addunkid}}" class="addunkid" name="address" checked>
+                                    <input data-ng-if="address.defaultadd != 1" type="radio" value="{{address.addunkid}}" class="addunkid" name="address">
                                 </div>
                                 <div data-ng-if="!isDefaultAddress">
-                                    <input data-ng-if="$index == 0" type="radio" value="" name="address" checked>
-                                    <input data-ng-if="$index != 0" type="radio" value="" name="address">
+                                    <input data-ng-if="$index == 0" type="radio" value="{{address.addunkid}}" class="addunkid" name="address" checked>
+                                    <input data-ng-if="$index != 0" type="radio" value="{{address.addunkid}}" class="addunkid" name="address">
                                 </div>
+                                <!-- <input type="radio" ng-model="addunkid" value="{{address.addunkid}}" name="address"> -->
                             </div>
                             <div class="col-xs-9">
                                 <div class="row no-padding">
@@ -125,7 +126,7 @@
                     <div class="panel-body" style="padding:15px 35px">
                         <div class="row ff-menu-product">
                             <div class="col-xs-1">
-                                <input type="radio" name="payment" value="1" checked>
+                                <input type="radio" class="paymentunkid" name="payment" value="1" checked>
                             </div>
                             <div class="col-xs-10">
                                 Cash On Delivery
@@ -135,7 +136,7 @@
                         <div class="row ff-menu-product">
                             <div class="col-xs-1">
                                 <fieldset disabled>
-                                    <input type="radio" name="payment" value="2">
+                                    <input type="radio" class="paymentunkid" name="payment" value="2">
                                 </fieldset>
                             </div>
                             <div class="col-xs-10" style="font-size:12px; color:#777">
@@ -146,7 +147,7 @@
                         <div class="row ff-menu-product">
                             <div class="col-xs-1">
                                 <fieldset disabled>
-                                    <input type="radio" name="payment" value="3">
+                                    <input type="radio" class="paymentunkid" name="payment" value="3">
                                 </fieldset>
                             </div>
                             <div class="col-xs-10" style="font-size:12px; color:#777">

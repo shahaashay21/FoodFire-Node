@@ -86,13 +86,71 @@ app.controller("checkout", function($scope, $rootScope, $http, $location, $windo
                     $("#"+i).after("<div class=\'col-xs-12 ff-text-danger\'>"+message+"</div>");
                 });
             } else {
-                if(response.message = "Added"){
+                if(response.message == "Added"){
                     alertline('alert-notify-success','<b>Address Added Successfully.</b>');
                     $scope.addressService.getAddress();
                 }
             }
         }, function error(error){
-            if(error.statusText=="timeout") {
+            if(error.statusText == "timeout") {
+                $scope.addNewAddress();
+            }
+        });
+    }
+
+    $scope.placeOrder = function (){
+        if(!$rootScope.userAuthenticated){
+            alertline('alert-notify-danger', "<b>Please Sign In To Place Order</b>");
+            return;
+        }
+        var sendData = {_csrf};
+        if($rootScope.updatedPromo && $rootScope.updatedPromo == true){
+            sendData.total = $rootScope.extraInfo.discounted_grand_amount;
+            sendData.promo_code = $rootScope.applied_promo;
+        } else {
+            sendData.total = $rootScope.extraInfo.grand_total;
+        }
+        var addunkid = $(".addunkid:checked").val();
+        var paymentunkid = $(".paymentunkid:checked").val();
+        if(addunkid && paymentunkid){
+            sendData.addunkid = addunkid;
+            sendData.paymentunkid = paymentunkid;
+        } else {
+            if(!addunkid){
+                alertline('alert-notify-danger', "<b>Please select your delivery address</b>");
+            } else if(!paymentunkid) {
+                alertline('alert-notify-danger', "<b>Please select payment method</b>");
+            }
+            return;
+        }
+        $http({
+            method: 'POST',
+            url: "/placeorder",
+            data: sendData,
+            dataType: 'jsonp',
+            timeout: 4000
+        }).then(function success(response){
+            response = response.data;
+
+            console.log(response);
+            if(response.alert){
+                if(response.alertType && response.alertMessage)
+                alertline(response.alertType, response.alertMessage);
+            }
+            if(!response.modal){
+                // Close modal
+            }
+
+            if(response.error){
+                $.each(response.message, function(i,message){
+                    $("#"+i).addClass("inputerr");
+                    $("#"+i).after("<div class=\'col-xs-12 ff-text-danger\'>"+message+"</div>");
+                });
+            } else {
+                
+            }
+        }, function error(error){
+            if(error.statusText == "timeout") {
                 $scope.addNewAddress();
             }
         });

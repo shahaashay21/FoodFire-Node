@@ -19,7 +19,7 @@
         <div class="approx-time">
                 <b>Approx. Delivery Time : </b>
                 <div style="display:inline-table">
-                    {{del_time}}
+                    {{extraInfo.delivery_time}}
                     <i class="fa fa-clock-o fa-lg"></i>
                 </div>
         </div>
@@ -62,7 +62,7 @@
                                 <span title="Delete" data-ng-click="cartService.deleteProduct(item.cartid)" data-placement="top" data-toggle="tooltip"><a><i class="fa fa-trash fa-white" style="cursor:pointer;"></i></a></span>
                             </div>
                             <div class="col-xs-3 no-padding" style="text-align:right">
-                                <i class="fa fa-inr"></i> {{item.total_price}}
+                                <i class="fa fa-inr"></i> {{item.item_total_price}}
                             </div>
                         </div>
                     </div>
@@ -92,7 +92,11 @@
                         <div class="col-xs-8 no-padding">
                             Total:
                         </div>
-                        <div class="col-xs-4 no-padding">
+                        <div data-ng-if="updatedPromo === true" class="col-xs-4 no-padding">
+                            <span style="text-decoration: line-through;" class="text-muted">{{(extraInfo.total_without_tax).toFixed(2)}}</span>
+                            <span>{{extraInfo.discounted_total_amount}}.00</span>
+                        </div>
+                        <div data-ng-if="updatedPromo !== true" class="col-xs-4 no-padding">
                             {{(extraInfo.total_without_tax).toFixed(2)}}
                         </div>
                         <div class="col-xs-8 no-padding">
@@ -127,10 +131,9 @@
                                 </div>
                                 <div data-ng-if="updatedPromo === true" class="col-xs-6">
                                     <span style="text-decoration: line-through;" class="text-muted">{{extraInfo.grand_total}}.00</span>
-                                    <span>{{extraInfo.discounted_amount}}.00</span>
+                                    <span>{{extraInfo.discounted_grand_amount}}.00</span>
                                 </div>
                                 <div data-ng-if="updatedPromo !== true" class="col-xs-6">
-                                    <!-- {{((extraInfo.total) + (25*extraInfo.restaurants)).toFixed(2)}} -->
                                     {{extraInfo.grand_total}}.00
                                 </div>
                             </div>
@@ -146,7 +149,7 @@
                         </a>
                     </div>
                     <div class="col-sm-6 hidden-xs">
-                        <a onclick="finalOrder();" class="btn btn-success cart-checkout">
+                        <a data-ng-click="placeOrder()"  class="btn btn-success cart-checkout">
                             Place Order
                         </a>
                     </div>
@@ -157,7 +160,7 @@
                         </a>
                     </div>
                     <div class="visible-xs col-xs-6">
-                        <a onclick="finalOrder()" style="font-size:13px" class="btn btn-success cart-checkout">
+                        <a data-ng-click="placeOrder()" style="font-size:13px" class="btn btn-success cart-checkout">
                             Place Order
                         </a>
                     </div>

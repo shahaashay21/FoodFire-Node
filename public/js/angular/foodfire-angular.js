@@ -22,17 +22,17 @@ app.factory('cartService', function($http, $rootScope, commonService){
             delivery_time += parseFloat($rootScope.cart[vendorId][0].del_time);
             let tax = "";
             for(let i = 0; i < items.length; i++){
-                let total_price = parseFloat(parseFloat(items[i].price) * parseFloat(items[i].qty));
+                let item_total_price = parseFloat(parseFloat(items[i].price) * parseFloat(items[i].qty));
                 vendor_qty += parseFloat(items[i].qty);
                 if(items[i].extraItems){
                     for(let j = 0; j < items[i].extraItems.length; j++){
                         if(items[i].extraItems[j].item_price != null){
-                            total_price += parseFloat(items[i].extraItems[j].item_price);
+                            item_total_price += parseFloat(items[i].extraItems[j].item_price);
                         }
                     }
                 }
-                $rootScope.cart[vendorId][i].total_price = total_price;
-                vendor_total += total_price;
+                $rootScope.cart[vendorId][i].item_total_price = item_total_price;
+                vendor_total += item_total_price;
                 tax = $rootScope.cart[vendorId][i].tax;
                 // console.log($rootScope.cart[vendorId][i]);
             };
@@ -88,11 +88,8 @@ app.factory('cartService', function($http, $rootScope, commonService){
                 $rootScope.cart = response.data;
                 $rootScope.cart = _.groupBy($rootScope.cart, 'vendorunkid');
                 // console.log($rootScope.cart);
-                let delivery_time = 0;
-                _.forEach($rootScope.cart, function(value, key){
-                    delivery_time += parseFloat($rootScope.cart[key][0].del_time);
-                });
-                $rootScope.del_time = delivery_time;
+
+                // Evaluate cart
                 evaluateCart($rootScope.cart);
                 // console.log($rootScope.cart);
                 if(url.indexOf("/checkout")+1){
@@ -220,9 +217,9 @@ app.factory('cartService', function($http, $rootScope, commonService){
                 if(response.message){
                     $rootScope.discount_type = response.message.discount_type;
                     $rootScope.discount = response.message.discount;
-                    updateWithPromo();
                 }
             }
+            updateWithPromo();
         }, function error(error){
             if(error.statusText=="timeout") {
                 $scope.addNewAddress();
@@ -232,14 +229,17 @@ app.factory('cartService', function($http, $rootScope, commonService){
     function updateWithPromo(){
         $rootScope.updatedPromo = false;
         if($rootScope.extraInfo && $rootScope.extraInfo.grand_total && $rootScope.discount_type && $rootScope.discount){
-            $rootScope.extraInfo.original_amount = $rootScope.extraInfo.grand_total
-            if($rootScope.discount_type == 1){
-                $rootScope.extraInfo.discounted_amount = parseInt($rootScope.extraInfo.original_amount - $rootScope.discount);
+            $rootScope.extraInfo.original_grand_total = $rootScope.extraInfo.grand_total;
+            $rootScope.extraInfo.original_total_amount = $rootScope.extraInfo.total_without_tax;
+            let tax = parseInt($rootScope.extraInfo.total - $rootScope.extraInfo.total_without_tax);
+            if($rootScope.discount_type == 5){
+                $rootScope.extraInfo.discounted_total_amount = parseInt($rootScope.extraInfo.original_total_amount - $rootScope.discount);
                 $rootScope.updatedPromo = true;
-            } else if($rootScope.discount_type == 2 && $rootScope.discount <= 100){
-                $rootScope.extraInfo.discounted_amount = parseInt($rootScope.extraInfo.original_amount - (($rootScope.extraInfo.original_amount * $rootScope.discount) / 100));
+            } else if($rootScope.discount_type == 6 && $rootScope.discount <= 100){
+                $rootScope.extraInfo.discounted_total_amount = parseInt($rootScope.extraInfo.original_total_amount - (($rootScope.extraInfo.original_total_amount * $rootScope.discount) / 100));
                 $rootScope.updatedPromo = true;
             }
+            $rootScope.extraInfo.discounted_grand_amount = parseInt($rootScope.extraInfo.delivery_charge + tax + $rootScope.extraInfo.discounted_total_amount);
         }
     }
     return{
@@ -370,8 +370,12 @@ app.factory('addressService', function($http, $rootScope){
                     $.each(response.data, function(i,address){
                         if(address.defaultadd == 1){
                             $rootScope.isDefaultAddress = true;
+                            $rootScope.addunkid = address.addunkid;
                         }
                     });
+                    if(!$rootScope.isDefaultAddress){
+                        $rootScope.addunkid = response.data[0].addunkid;
+                    }
                     $rootScope.addresses = response.data;
                 }
             }, function error(error){
