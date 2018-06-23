@@ -59,7 +59,10 @@ typings/
 
 # Amazon aws pem file
 amshah.pem
+amshah-india.pem
 
 # Visual studio settings
 .vscode
+
+/nginx
 

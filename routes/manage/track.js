@@ -12,6 +12,8 @@ let DB = require('../../db/db');
 /* GET home page. */
 exports.index = function(req, res) {
     logger.info("Track ::: index");
+    let orderunkid = req.params.orderunkid;
+    logger.info(orderunkid);
     let sendData = {
         'user': req.session.user,
         'userAuthenticated': req.session.userAuthenticated,

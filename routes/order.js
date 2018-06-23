@@ -60,7 +60,7 @@ exports.placeOrder = function (req, res) {
                         promoDetails = JSON.parse(promoDetails);
                         evaluateCart(req, cartData, total, promo, promoDetails, addunkid, paymentunkid).then(returnData => {
                             logger.info(returnData);
-                            res.send(returnData); 
+                            res.send(returnData);
                         }).catch(error => {
                             logger.error(error);
                         });
@@ -70,7 +70,7 @@ exports.placeOrder = function (req, res) {
                 } else {
                     evaluateCart(req, cartData, total, promo, null, addunkid, paymentunkid).then(returnData => {
                         logger.info(returnData);
-                        res.send(returnData); 
+                        res.send(returnData);
                     }).catch(error => {
                         logger.error(error);
                     });
@@ -185,7 +185,15 @@ const evaluateCart = function (req, cartInfo, totalValue, promo, promoDetails, a
                             order.promo = promo;
 
                             order.save().then(() => {
-                                resolve(JSON.stringify(grand_total));
+                                DB.Cart.destroy({where: {cusunkid: req.session.user.cusunkid}}).then(() => {
+                                    let message = {
+                                        status: 'success',
+                                        orderunkid
+                                    }
+                                    response.create({message}, (returnData) => {
+                                        resolve(returnData);
+                                    })
+                                })
                             })
                         });
                     } else {

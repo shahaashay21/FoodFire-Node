@@ -147,7 +147,9 @@ app.controller("checkout", function($scope, $rootScope, $http, $location, $windo
                     $("#"+i).after("<div class=\'col-xs-12 ff-text-danger\'>"+message+"</div>");
                 });
             } else {
-                
+                if(response.message && response.message.status == "success"){
+                    window.location = "/track/"+response.message.orderunkid;
+                }
             }
         }, function error(error){
             if(error.statusText == "timeout") {

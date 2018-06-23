@@ -1,6 +1,6 @@
 //LIBS
 let validator = require('validator');
-let bcrypt = require('bcrypt');
+let bcrypt = require('bcryptjs');
 
 //HELPERS
 let response = require('../helper/response');
